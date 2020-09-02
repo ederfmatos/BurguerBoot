@@ -9,6 +9,8 @@ class Attendance {
   start() {
     this.createdAt = new Date().getTime();
     this.started = true;
+    this.finished = false;
+    this.messages = [];
   }
 
   addMessage(message) {
@@ -16,7 +18,7 @@ class Attendance {
   }
 
   isStarted() {
-    return Boolean(this.started) && !Boolean(this.finished);
+    return Boolean(this.started) && this.finished === false;
   }
 
   getMessages() {
