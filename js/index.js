@@ -20,20 +20,21 @@ inputText.addEventListener("keydown", (event) => {
 });
 
 function sendMessage() {
-  const text = inputText.value;
+  const message = inputText.value;
 
-  if (text) {
-    createMessage({ myMessage: true, text });
+  if (message) {
+    createMessage({ myMessage: true, message });
     inputText.value = "";
+    bot.respond(message);
   }
 
   inputText.focus();
 }
 
-function createMessage({ myMessage, text }) {
+function createMessage({ myMessage, message }) {
   const messageItem = document.createElement("li");
   messageItem.classList.add(myMessage ? "myMessage" : "botMessage");
-  messageItem.textContent = text;
+  messageItem.textContent = message;
   addNewMessage(messageItem);
 }
 
