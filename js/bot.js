@@ -4,21 +4,7 @@ const bot = {
   name: "Linguini",
   merchantName: "Rémy`s Burger",
   getFirstMessage() {
-    const salutation = (() => {
-      const hours = new Date().getHours();
-
-      if (hours >= 5 && hours < 12) {
-        return "Bom dia";
-      }
-
-      if (hours < 18) {
-        return "Boa tarde";
-      }
-
-      return "Boa noite";
-    })();
-
-    return `🍕 ${salutation} ${attendance.customer.name}, sou ${
+    return `🍕 ${getSalutation()} ${attendance.customer.name}, sou ${
       this.name
     }, o chatbot do ${this.merchantName}, estarei te atendendo agora 🍕
     Para começar digite a opção desejada:
@@ -71,10 +57,14 @@ const bot = {
           ${this.formatOptions(response.options)}`;
         }
 
+        if (response.globalAction) {
+          return this[response.globalAction]();
+        }
+
         throw new OptionNotImplementedError();
       }
 
-      return "Opção não implementada";
+      return "Opção não implementada ainda men";
     } catch (error) {
       if (error instanceof BotError) {
         error.showError();
@@ -84,6 +74,11 @@ const bot = {
       console.error(error);
       return "Ocorreu um erro desconhecido";
     }
+  },
+  finishAttendance() {
+    return `Finalizando atendimento, muito obrigado por entrar em contato com ${
+      this.merchantName
+    }. ${getSalutation()} 🖖🍴`;
   },
   messages: [
     {
@@ -127,6 +122,7 @@ const bot = {
     {
       text: "03 - Finalizar atendimento",
       value: "3",
+      globalAction: "finishAttendance",
     },
   ],
 };
