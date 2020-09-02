@@ -76,6 +76,8 @@ const bot = {
     }
   },
   finishAttendance() {
+    attendance.finish();
+
     return `Finalizando atendimento, muito obrigado por entrar em contato com ${
       this.merchantName
     }. ${getSalutation()} 🖖🍴`;

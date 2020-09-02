@@ -16,7 +16,7 @@ class Attendance {
   }
 
   isStarted() {
-    return Boolean(this.started);
+    return Boolean(this.started) && !Boolean(this.finished);
   }
 
   getMessages() {
