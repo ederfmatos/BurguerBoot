@@ -1,8 +1,8 @@
 const attendance = new Attendance();
-console.log(attendance);
 
 const bot = {
   name: "Linguini",
+  merchantName: "Rémy`s Burger",
   getFirstMessage() {
     const salutation = (() => {
       const hours = new Date().getHours();
@@ -20,26 +20,70 @@ const bot = {
 
     return `🍕 ${salutation} ${attendance.customer.name}, sou ${
       this.name
-    }, o chatbot do Rémy\`s Burger, estarei te atendendo agora 🍕
+    }, o chatbot do ${this.merchantName}, estarei te atendendo agora 🍕
     Para começar digite a opção desejada:
     
-    ${this.messages.map((message) => message.text).join("\n")}`;
+    ${this.formatOptions(this.messages)}`;
+  },
+  formatOptions(options) {
+    return options.map(({ text }) => text).join("\n");
   },
   respond(message) {
     if (!attendance.isStarted()) {
       attendance.start();
       attendance.addMessage({ message });
 
-      return createMessage({
-        myMessage: false,
-        message: this.getFirstMessage(),
-      });
+      return this.createBotMessage(this.getFirstMessage());
     }
 
+    attendance.addMessage({ message });
+
+    const response = this.getResponseFromMessage({ message });
+
+    if (typeof response === "string") {
+      return this.createBotMessage(response);
+    }
+
+    if (Array.isArray(response)) {
+      return response.forEach(createBotMessage);
+    }
+  },
+  createBotMessage(message) {
     return createMessage({
       myMessage: false,
-      message: "Opção não implementada ainda",
+      message,
     });
+  },
+  getResponseFromMessage({ message }) {
+    try {
+      if (attendance.getLastMessage() === null) {
+        const response = this.messages.find(
+          ({ value }) => value === String(message).trim()
+        );
+
+        if (!response) {
+          throw new OptionNotImplementedError();
+        }
+
+        if (response.options) {
+          return `Escolha uma opção:
+  
+          ${this.formatOptions(response.options)}`;
+        }
+
+        throw new OptionNotImplementedError();
+      }
+
+      return "Opção não implementada";
+    } catch (error) {
+      if (error instanceof BotError) {
+        error.showError();
+        return error.message;
+      }
+
+      console.error(error);
+      return "Ocorreu um erro desconhecido";
+    }
   },
   messages: [
     {
