@@ -67,4 +67,28 @@ class Attendance {
   getLastProduct() {
     return { ...this.products[this.products.length - 1] };
   }
+
+  hasProducts() {
+    return this.products.length > 0;
+  }
+
+  getAttendanceInformation() {
+    return `Informações do atendimento:
+    
+    Iniciado às ${new Date(this.createdAt).toLocaleTimeString()}
+
+    Itens:
+    ${this.products
+      .map(
+        (product) => `
+    Pedido: ${product.name}
+    Quantidade: ${product.quantity}
+    Valor: R$ 23,90
+    ${product.hasObservation ? `Observação: ${product.observation}` : ""}`
+      )
+      .join("\n")}
+    Valor total do pedido: R$ 34,90
+    Tempo de espera: 40 minutos, mas fique tranquilo, estarei entrando em contato se for preciso
+    `;
+  }
 }

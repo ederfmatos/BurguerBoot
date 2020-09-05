@@ -39,7 +39,12 @@ class RequestOption {
         name: "Finalizar atentimento",
         value: "3",
         onSelect(option, message, attendance) {
-          console.log("03 - Finalizar atentimento");
+          if (attendance.hasProducts()) {
+            return `${attendance.getAttendanceInformation()}
+            ${this.bot.finishAttendance()}`;
+          }
+
+          return this.bot.finishAttendance();
         },
       },
     ];

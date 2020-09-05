@@ -167,7 +167,7 @@ function configureParents(message) {
   }
 
   if (message.globalAction && typeof bot[message.globalAction] === "function") {
-    message.onSelect = (...args) => bot[message.globalAction](...args);
+    message.onSelect = bot[message.globalAction].bind(bot);
     delete message.globalAction;
   }
 }
