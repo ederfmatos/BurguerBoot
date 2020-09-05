@@ -1,17 +1,27 @@
-apply plugin: 'java'
+plugins {
+    id 'org.springframework.boot' version '2.3.3.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
+}
 
-apply plugin: 'application'
+group = 'com.ederfmatos.burguerbot'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = '11'
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
 
 repositories {
     jcenter()
+    mavenCentral()
 }
 
 dependencies {
-    compile 'com.google.guava:guava:23.0'
-    compile 'javax.websocket:javax.websocket-api:1.1'
+    implementation('org.springframework.boot:spring-boot-starter-websocket')
 
     testCompile 'junit:junit:4.12'
 }
-
-mainClassName = 'App'
 
