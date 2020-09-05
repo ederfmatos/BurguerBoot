@@ -12,7 +12,9 @@ const bot = {
     ${this.formatOptions(this.messages)}`;
   },
   formatOptions(options) {
-    return options.map(({ text }) => text).join("\n");
+    return options
+      .map(({ name, value }) => `${String(value).padStart(2, "0")} - ${name}`)
+      .join("\n");
   },
   respond(message) {
     if (!attendance.isStarted()) {
@@ -132,7 +134,7 @@ const bot = {
 
 bot.messages = [
   {
-    text: "01 - Fazer pedido",
+    name: "Fazer pedido",
     value: "1",
     options: [
       new Snack(bot).getRequestObject(),
@@ -140,11 +142,11 @@ bot.messages = [
     ],
   },
   {
-    text: "02 - Saber andamento de pedido",
+    name: "Saber andamento de pedido",
     value: "2",
   },
   {
-    text: "03 - Finalizar atendimento",
+    name: "Finalizar atendimento",
     value: "3",
     globalAction: "finishAttendance",
   },

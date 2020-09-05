@@ -27,7 +27,7 @@ class RequestOption {
     return [
       this.getFirstItemFinishOption(),
       {
-        text: "02 - Fazer outro pedido",
+        name: "Fazer outro pedido",
         value: "2",
         onSelect(option, message, attendance) {
           attendance.setLastMessage(null);
@@ -36,7 +36,7 @@ class RequestOption {
         },
       },
       {
-        text: "03 - Finalizar atentimento",
+        name: "Finalizar atentimento",
         value: "3",
         onSelect(option, message, attendance) {
           console.log("03 - Finalizar atentimento");
@@ -76,17 +76,15 @@ class RequestOption {
           `;
   }
 
-  getQuantity(option, message, attendance) {
-    attendance.addNewProduct({ name: option.text });
+  getQuantity({ name }, message, attendance) {
+    attendance.addNewProduct({ name });
 
-    return `Ok, você selecionou "${
-      option.text.split(" - ")[1]
-    }", qual a quantidade?"`;
+    return `Ok, você selecionou "${name}", qual a quantidade?"`;
   }
 
   getRequestObject() {
     return {
-      text: this.getName(),
+      name: this.getName(),
       value: this.getValue(),
       options: this.getOptions(),
       onSelectChild: this.getOnSelectChild(),

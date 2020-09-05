@@ -8,12 +8,12 @@ class Snack extends RequestOption {
   }
 
   getName() {
-    return "01 - Lanches";
+    return "Lanches";
   }
 
   getFirstItemFinishOption() {
     return {
-      text: "01 - Pedir outro lanche",
+      name: "Pedir outro lanche",
       value: "1",
       onSelect(option, message, attendance) {
         attendance.setLastMessage(this.bot.messages[0]);
@@ -60,11 +60,11 @@ class Snack extends RequestOption {
   getOptions() {
     return [
       {
-        text: "01 - Sanduiche de presunto",
+        name: "Sanduiche de presunto",
         value: "1",
       },
       {
-        text: "02 - Pão com ovo",
+        name: "Pão com ovo",
         value: "2",
       },
     ];

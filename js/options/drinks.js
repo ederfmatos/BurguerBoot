@@ -4,12 +4,12 @@ class Drinks extends RequestOption {
   }
 
   getName() {
-    return "02 - Bebidas";
+    return "Bebidas";
   }
 
   getFirstItemFinishOption() {
     return {
-      text: "01 - Pedir outra bebida",
+      name: "Pedir outra bebida",
       value: "1",
       onSelect(option, message, attendance) {
         attendance.setLastMessage(this.bot.messages[0]);
@@ -22,11 +22,11 @@ class Drinks extends RequestOption {
   getOptions() {
     return [
       {
-        text: "01 - Coca cola 600ml",
+        name: "Coca cola 600ml",
         value: "1",
       },
       {
-        text: "02 - Fanta Guaraná",
+        name: "Fanta Guaraná",
         value: "2",
       },
     ];
