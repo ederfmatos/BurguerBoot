@@ -24,12 +24,12 @@ class Attendance {
     return Boolean(this.started) && this.finished === false;
   }
 
-  getMessages({ less = 0 }) {
+  getMessages() {
     if (this.messages.length === 0) {
       return [];
     }
 
-    return [...this.messages.slice(1, this.messages.length - less)];
+    return [...this.messages.slice(1, this.messages.length)];
   }
 
   getLastMessage() {
@@ -86,7 +86,7 @@ class Attendance {
     Valor: R$ 23,90
     ${product.hasObservation ? `Observação: ${product.observation}` : ""}`
       )
-      .join("\n")}
+      .join("")}
     Valor total do pedido: R$ 34,90
     Tempo de espera: 40 minutos, mas fique tranquilo, estarei entrando em contato se for preciso
     `;
