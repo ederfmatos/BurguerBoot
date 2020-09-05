@@ -22,7 +22,7 @@ inputText.addEventListener("keydown", (event) => {
 function sendMessage() {
   const message = inputText.value;
 
-  if (message) {
+  if (message && message.trim()) {
     createMessage({ myMessage: true, message });
     inputText.value = "";
     bot.respond(message);

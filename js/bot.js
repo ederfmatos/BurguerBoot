@@ -40,31 +40,63 @@ const bot = {
       message,
     });
   },
+  getOptionFromMessage(message, messages = this.messages) {
+    const option = messages.find(
+      ({ value }) => value === String(message).trim()
+    );
+
+    if (!option) {
+      throw new InvalidOptionError();
+    }
+
+    return option;
+  },
+  asksToChooseAnOption(options) {
+    return `Escolha uma opção:
+  
+    ${this.formatOptions(options)}`;
+  },
   getResponseFromMessage({ message }) {
     try {
       if (attendance.getLastMessage() === null) {
-        const response = this.messages.find(
-          ({ value }) => value === String(message).trim()
-        );
+        const response = this.getOptionFromMessage(message);
 
-        if (!response) {
-          throw new OptionNotImplementedError();
-        }
+        attendance.setLastMessage(response);
 
         if (response.options) {
-          return `Escolha uma opção:
-  
-          ${this.formatOptions(response.options)}`;
+          return this.asksToChooseAnOption(response.options);
         }
 
-        if (response.globalAction) {
-          return this[response.globalAction]();
+        if (response.onSelect) {
+          return response.onSelect();
         }
 
         throw new OptionNotImplementedError();
       }
 
-      return "Opção não implementada ainda men";
+      const lastMessage = attendance.getLastMessage();
+
+      if (lastMessage.actions) {
+        return this.handleOptionActions(lastMessage, message);
+      }
+
+      const response = this.getOptionFromMessage(message, lastMessage.options);
+
+      attendance.setLastMessage(response);
+
+      if (response.options) {
+        return this.asksToChooseAnOption(response.options);
+      }
+
+      if (response.onSelect) {
+        return response.onSelect(response);
+      }
+
+      if (response.actions) {
+        return this.handleOptionActions(response, message);
+      }
+
+      throw new OptionNotImplementedError();
     } catch (error) {
       if (error instanceof BotError) {
         error.showError();
@@ -75,6 +107,16 @@ const bot = {
       return "Ocorreu um erro desconhecido";
     }
   },
+  handleOptionActions(option, message) {
+    const actionResponse = option.actions[attendance.lastChildAction](
+      option,
+      message,
+      attendance
+    );
+    attendance.incrementLastChildNumber();
+
+    return actionResponse;
+  },
   finishAttendance() {
     attendance.finish();
 
@@ -82,49 +124,57 @@ const bot = {
       this.merchantName
     }. ${getSalutation()} 🖖🍴`;
   },
-  messages: [
-    {
-      text: "01 - Fazer pedido",
-      value: "1",
-      options: [
-        {
-          text: "01 - Lanches",
-          value: "1.1",
-          options: [
-            {
-              text: "Sanduiche de presunto",
-              value: "1.1.1",
-            },
-            {
-              text: "Pão com ovo",
-              value: "1.1.1",
-            },
-          ],
-        },
-        {
-          text: "02 - Bebidas",
-          value: "1.2",
-          options: [
-            {
-              text: "Coca cola 600ml",
-              value: "1.2.1",
-            },
-            {
-              text: "Fanta Guaraná",
-              value: "1.2.2",
-            },
-          ],
-        },
-      ],
-    },
-    {
-      text: "02 - Saber andamento de pedido",
-      value: "2",
-    },
-    {
-      text: "03 - Finalizar atendimento",
-      value: "3",
-      globalAction: "finishAttendance",
-    },
-  ],
 };
+
+bot.messages = [
+  {
+    text: "01 - Fazer pedido",
+    value: "1",
+    options: [
+      new Snack(bot).getRequestObject(),
+      new Drinks(bot).getRequestObject(),
+    ],
+  },
+  {
+    text: "02 - Saber andamento de pedido",
+    value: "2",
+  },
+  {
+    text: "03 - Finalizar atendimento",
+    value: "3",
+    globalAction: "finishAttendance",
+  },
+];
+
+function configureBot() {
+  bot.messages.forEach(configureParents);
+}
+
+function configureParents(message) {
+  if (message.options) {
+    const { onSelectChild } = message;
+
+    message.options.forEach((option) => {
+      configureParents(option);
+
+      if (onSelectChild) {
+        onSelectChild.forEach((action) => {
+          if (!option.actions) {
+            option.actions = [];
+          }
+
+          option.actions.push(action);
+        });
+      }
+    });
+
+    delete message.onSelectChild;
+  }
+
+  if (message.globalAction && typeof bot[message.globalAction] === "function") {
+    message.onSelect = (...args) => bot[message.globalAction](...args);
+    delete message.globalAction;
+  }
+}
+
+configureBot();

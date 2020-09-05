@@ -4,6 +4,7 @@ class Attendance {
     this.finished = false;
     this.customer = { name: "Eder Matos" };
     this.messages = [];
+    this.lastChildAction = 0;
   }
 
   start() {
@@ -11,6 +12,7 @@ class Attendance {
     this.started = true;
     this.finished = false;
     this.messages = [];
+    this.lastMessage = null;
   }
 
   addMessage(message) {
@@ -21,20 +23,24 @@ class Attendance {
     return Boolean(this.started) && this.finished === false;
   }
 
-  getMessages() {
+  getMessages({ less = 0 }) {
     if (this.messages.length === 0) {
       return [];
     }
 
-    return [...this.messages.slice(1, this.messages.length)];
+    return [...this.messages.slice(1, this.messages.length - less)];
   }
 
   getLastMessage() {
-    if (this.messages.length < 3) {
-      return null;
-    }
+    return this.lastMessage;
+  }
 
-    return { ...this.messages[this.messages.length - 1] };
+  setLastMessage(lastMessage) {
+    this.lastMessage = lastMessage;
+  }
+
+  incrementLastChildNumber() {
+    this.lastChildAction++;
   }
 
   finish() {
