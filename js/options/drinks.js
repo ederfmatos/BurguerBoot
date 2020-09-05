@@ -32,6 +32,12 @@ class Drinks extends RequestOption {
     ];
   }
 
+  chooseOptionsFinish(option, message) {
+    this.validateQuantity(message);
+    attendance.changeLastProduct({ quantity: parseInt(message, 10) });
+    return super.chooseOptionsFinish(...arguments);
+  }
+
   getOnSelectChild() {
     return [
       this.getQuantity.bind(this),

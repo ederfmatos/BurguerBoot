@@ -57,6 +57,18 @@ class RequestOption {
     throw new InvalidOptionError();
   }
 
+  validateQuantity(quantity) {
+    if (!isNumber(quantity)) {
+      throw new InvalidOptionError("Desculpe, não entendi, qual a quantidade?");
+    }
+
+    if (quantity <= 0) {
+      throw new InvalidOptionError(
+        "Desculpe, mas você tem que escolher pelo menos 1!"
+      );
+    }
+  }
+
   chooseOptionsFinish() {
     return `Ok, o que mais você deseja?
         
@@ -64,7 +76,9 @@ class RequestOption {
           `;
   }
 
-  getQuantity(option) {
+  getQuantity(option, message, attendance) {
+    attendance.addNewProduct({ name: option.text });
+
     return `Ok, você selecionou "${
       option.text.split(" - ")[1]
     }", qual a quantidade?"`;

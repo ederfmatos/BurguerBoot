@@ -5,6 +5,7 @@ class Attendance {
     this.customer = { name: "Eder Matos" };
     this.messages = [];
     this.lastChildAction = 0;
+    this.products = [];
   }
 
   start() {
@@ -46,5 +47,24 @@ class Attendance {
   finish() {
     this.finished = true;
     this.finishedAt = new Date().getTime();
+  }
+
+  addNewProduct(product) {
+    this.products.push(product);
+  }
+
+  changeLastProduct(attributes) {
+    const lastProduct = this.getLastProduct();
+
+    if (!lastProduct) return;
+
+    this.products[this.products.length - 1] = {
+      ...lastProduct,
+      ...attributes,
+    };
+  }
+
+  getLastProduct() {
+    return { ...this.products[this.products.length - 1] };
   }
 }

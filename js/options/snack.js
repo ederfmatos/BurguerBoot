@@ -24,15 +24,9 @@ class Snack extends RequestOption {
   }
 
   getObservation(option, message) {
-    if (!isNumber(message)) {
-      throw new InvalidOptionError("Desculpe, não entendi, qual a quantidade?");
-    }
+    this.validateQuantity(message);
 
-    if (message <= 0) {
-      throw new InvalidOptionError(
-        "Desculpe, mas você tem que escolher pelo menos 1!"
-      );
-    }
+    attendance.changeLastProduct({ quantity: parseInt(message, 10) });
 
     return `Ok, você deseja adicionar alguma observação para o lanche?
     
@@ -46,12 +40,21 @@ class Snack extends RequestOption {
     }
 
     if ("1" === message) {
+      attendance.changeLastProduct({ hasObservation: true });
       return `Ok, qual observação você deseja inserir?`;
     }
 
     attendance.incrementLastChildNumber();
 
     return this.chooseOptionsFinish(...arguments);
+  }
+
+  chooseOptionsFinish(option, observation) {
+    if (attendance.getLastProduct().hasObservation) {
+      attendance.changeLastProduct({ observation });
+    }
+
+    return super.chooseOptionsFinish(...arguments);
   }
 
   getOptions() {

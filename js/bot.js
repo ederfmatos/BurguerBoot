@@ -26,6 +26,10 @@ const bot = {
 
     const response = this.getResponseFromMessage({ message });
 
+    if (attendance.products.length) {
+      console.log(attendance.products);
+    }
+
     if (typeof response === "string") {
       return this.createBotMessage(response);
     }
