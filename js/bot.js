@@ -27,18 +27,7 @@ const bot = {
     attendance.addMessage({ message });
 
     const response = this.getResponseFromMessage({ message });
-
-    if (attendance.products.length) {
-      console.log(attendance.products);
-    }
-
-    if (typeof response === "string") {
-      return this.createBotMessage(response);
-    }
-
-    if (Array.isArray(response)) {
-      return response.forEach(createBotMessage);
-    }
+    return this.createBotMessage(response);
   },
   createBotMessage(message) {
     return createMessage({
