@@ -62,10 +62,12 @@ class Snack extends RequestOption {
       {
         name: "Sanduiche de presunto",
         value: "1",
+        price: 12.5,
       },
       {
         name: "Pão com ovo",
         value: "2",
+        price: 7.9,
       },
     ];
   }

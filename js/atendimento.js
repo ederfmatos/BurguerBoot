@@ -73,21 +73,34 @@ class Attendance {
   }
 
   getAttendanceInformation() {
+    const formatter = new Intl.NumberFormat([], {
+      style: "currency",
+      currency: "BRL",
+    });
+
     return `Informações do atendimento:
     
     Iniciado às ${new Date(this.createdAt).toLocaleTimeString()}
 
     Itens:
+
     ${this.products
       .map(
-        (product) => `
+        (product) =>
+          `
     Pedido: ${product.name}
     Quantidade: ${product.quantity}
-    Valor: R$ 23,90
+    Valor: ${formatter.format(product.price * product.quantity)}
     ${product.hasObservation ? `Observação: ${product.observation}` : ""}`
       )
-      .join("")}
-    Valor total do pedido: R$ 34,90
+      .map((text) => text.trim())
+      .join("\n\n")}
+
+    Valor total do pedido: ${formatter.format(
+      this.products
+        .map(({ price, quantity }) => price * quantity)
+        .reduce((accum, price) => accum + price, 0)
+    )}
     Tempo de espera: 40 minutos, mas fique tranquilo, estarei entrando em contato se for preciso
     `;
   }

@@ -81,8 +81,8 @@ class RequestOption {
           `;
   }
 
-  getQuantity({ name }, message, attendance) {
-    attendance.addNewProduct({ name });
+  getQuantity({ name, price }, message, attendance) {
+    attendance.addNewProduct({ name, price });
 
     return `Ok, você selecionou "${name}", qual a quantidade?"`;
   }

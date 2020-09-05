@@ -24,10 +24,12 @@ class Drinks extends RequestOption {
       {
         name: "Coca cola 600ml",
         value: "1",
+        price: 2.9,
       },
       {
         name: "Fanta Guaraná",
         value: "2",
+        price: 4.9,
       },
     ];
   }
