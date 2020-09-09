@@ -5,8 +5,8 @@ import org.springframework.data.mongodb.core.mapping.Document;
 @Document
 public class FinishAttendanceOption extends ActionOption {
 
-    public FinishAttendanceOption() {
-        super("3", "Finalizar atendimento");
+    public FinishAttendanceOption(String value, String name) {
+        super(value, name);
     }
 
 }

@@ -3,12 +3,13 @@ package com.ederfmatos.burguerbot.service;
 import com.ederfmatos.burguerbot.exception.InvalidOptionException;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.repository.OptionRepository;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -19,6 +20,22 @@ public class OptionService {
 
     public OptionService(OptionRepository optionRepository) {
         this.optionRepository = optionRepository;
+    }
+
+    public List<Option> saveAll(Option... options) {
+        Stream.of(options).forEach(this::setOptionId);
+        return optionRepository.saveAll(Arrays.asList(options));
+    }
+
+    private void setOptionId(Option option) {
+        option.setId(UUID.randomUUID().toString());
+        if (option.hasOptions()) {
+            option.getOptions().forEach(this::setOptionId);
+        }
+    }
+
+    public Option getFirstOption() {
+        return findAll().get(0);
     }
 
     public List<Option> findAll() {
@@ -44,8 +61,12 @@ public class OptionService {
 
     public String formatOptions(List<? extends Option> options) {
         return options.stream()
-                .map(option -> String.format("%s - %s", StringUtils.leftPad(option.getValue(), 2, "0"), option.getName()))
+                .map(Option::toString)
                 .collect(Collectors.joining("\n"));
+    }
+
+    public void deleteAll() {
+        this.optionRepository.deleteAll();
     }
 
 }

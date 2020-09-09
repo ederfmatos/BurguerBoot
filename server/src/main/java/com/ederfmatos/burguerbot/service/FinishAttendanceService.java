@@ -1,8 +1,8 @@
 package com.ederfmatos.burguerbot.service;
 
-import com.ederfmatos.burguerbot.handler.BurgerBotSocketHandler.MessageRequest;
 import com.ederfmatos.burguerbot.listener.ActionListener;
 import com.ederfmatos.burguerbot.model.Attendance;
+import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.options.Option;
 import org.springframework.stereotype.Service;
 

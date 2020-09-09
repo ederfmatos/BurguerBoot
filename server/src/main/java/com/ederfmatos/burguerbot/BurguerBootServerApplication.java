@@ -1,11 +1,11 @@
 package com.ederfmatos.burguerbot;
 
 import com.ederfmatos.burguerbot.model.Product;
+import com.ederfmatos.burguerbot.model.options.FinishAttendanceOption;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.model.options.request.Drink;
-import com.ederfmatos.burguerbot.model.options.request.Request;
 import com.ederfmatos.burguerbot.model.options.request.Snack;
-import com.ederfmatos.burguerbot.repository.OptionRepository;
+import com.ederfmatos.burguerbot.service.OptionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,17 +14,16 @@ import org.springframework.data.mongodb.repository.config.EnableMongoRepositorie
 
 import java.math.BigDecimal;
 import java.util.Arrays;
-import java.util.List;
 
 @SpringBootApplication
 @Slf4j
 @EnableMongoRepositories
 public class BurguerBootServerApplication implements CommandLineRunner {
 
-    private final OptionRepository optionRepository;
+    private final OptionService optionService;
 
-    public BurguerBootServerApplication(OptionRepository optionRepository) {
-        this.optionRepository = optionRepository;
+    public BurguerBootServerApplication(OptionService optionService) {
+        this.optionService = optionService;
     }
 
     public static void main(String[] args) {
@@ -33,18 +32,27 @@ public class BurguerBootServerApplication implements CommandLineRunner {
 
     @Override
     public void run(String... args) {
-        Option realizarPedidos = new Request("1", "Realizar pedidos");
-        Snack lanches = new Snack("1", "Lanches");
-        lanches.setOptions(Arrays.asList(
-                new Product("1", "Lanche 1", BigDecimal.valueOf(9.9)),
-                new Product("2", "Lanche 2", BigDecimal.valueOf(15.9))
-        ));
-
-        Drink bebidas = new Drink("2", "Bebidas");
-
-        realizarPedidos.setOptions(Arrays.asList(lanches, bebidas));
-
-        optionRepository.deleteAll();
-        optionRepository.saveAll(Arrays.asList(realizarPedidos));
+//        Option realizarPedidos = new Option("1", "Realizar pedidos");
+//        Option saberAndamentoDePedido = new Option("2", "Saber andamento de pedido");
+//        Option finalizarAtendimento = new FinishAttendanceOption("3", "Finalizar atendimento");
+//
+//        Snack lanches = new Snack("1", "Lanches");
+//        lanches.setOptions(Arrays.asList(
+//                new Product("1", "Lanche 1", BigDecimal.valueOf(9.9)),
+//                new Product("2", "Lanche 2", BigDecimal.valueOf(15.9))
+//        ));
+//
+//        Drink bebidas = new Drink("2", "Bebidas");
+//        bebidas.setOptions(Arrays.asList(
+//                new Product("1", "Bebida 1", BigDecimal.valueOf(9.9)),
+//                new Product("2", "Bebida 2", BigDecimal.valueOf(15.9)),
+//                new Product("3", "Bebida 3", BigDecimal.valueOf(15.9)),
+//                new Product("4", "Bebida 4", BigDecimal.valueOf(15.9))
+//        ));
+//
+//        realizarPedidos.setOptions(Arrays.asList(lanches, bebidas));
+//
+//        optionService.deleteAll();
+//        optionService.saveAll(realizarPedidos, saberAndamentoDePedido, finalizarAtendimento);
     }
 }

@@ -22,6 +22,7 @@ public class Attendance {
     protected LocalDateTime createdAt;
     protected LocalDateTime finishedAt;
     private String lastMessage;
+    private int indexChildAction = -1;
 
     public Attendance(Customer customer) {
         this.customer = customer;
@@ -121,6 +122,20 @@ public class Attendance {
                 .map(Product::getPrice)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
+    }
+
+    public int getIndexChildAction() {
+        return indexChildAction;
+    }
+
+    public Attendance setIndexChildAction(int indexChildAction) {
+        this.indexChildAction = indexChildAction;
+        return this;
+    }
+
+    public Attendance incrementIndexChildAction() {
+        this.indexChildAction++;
+        return this;
     }
 
     public void finish() {
