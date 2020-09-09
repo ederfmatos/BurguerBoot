@@ -1,5 +1,6 @@
 package com.ederfmatos.burguerbot.utils;
 
+import java.math.BigDecimal;
 import java.time.LocalTime;
 
 public final class BurguerBotUtils {
@@ -28,6 +29,10 @@ public final class BurguerBotUtils {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public static String formatPrice(BigDecimal price) {
+        return "R$ " + price.setScale(2).toPlainString();
     }
 
 }

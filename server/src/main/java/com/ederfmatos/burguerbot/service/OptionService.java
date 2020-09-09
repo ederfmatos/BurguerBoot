@@ -61,7 +61,7 @@ public class OptionService {
 
     public String formatOptions(List<? extends Option> options) {
         return options.stream()
-                .map(Option::toString)
+                .map(Option::format)
                 .collect(Collectors.joining("\n"));
     }
 
