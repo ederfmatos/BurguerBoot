@@ -12,6 +12,11 @@ public class FinishAttendanceService implements ActionExecutable {
     @Override
     public String execute(MessageRequest messageRequest, Attendance attendance, Option option) {
         attendance.finish();
+
+        if (attendance.hasProducts()) {
+            return "Finalizando atendimento";
+        }
+
         return "Finalizando atendimento \uD83D\uDD96\uD83C\uDF74";
     }
 

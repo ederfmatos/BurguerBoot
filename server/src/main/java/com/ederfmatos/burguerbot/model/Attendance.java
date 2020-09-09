@@ -139,7 +139,8 @@ public class Attendance {
     }
 
     public void finish() {
-
+        this.finished = true;
+        this.finishedAt = LocalDateTime.now();
     }
 
 }

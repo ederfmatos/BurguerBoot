@@ -7,6 +7,7 @@ import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.Product;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.service.BotService;
+import com.ederfmatos.burguerbot.service.FinishAttendanceService;
 import com.ederfmatos.burguerbot.service.OptionService;
 import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
 import org.springframework.stereotype.Service;
@@ -18,10 +19,12 @@ import java.util.List;
 public abstract class RequestService implements ActionExecutable {
 
     protected final OptionService optionService;
+    protected final FinishAttendanceService finishAttendanceService;
     protected BotService botService;
 
-    public RequestService(OptionService optionService) {
+    public RequestService(OptionService optionService, FinishAttendanceService finishAttendanceService) {
         this.optionService = optionService;
+        this.finishAttendanceService = finishAttendanceService;
     }
 
     protected abstract List<ActionExecutable> getListeners();
@@ -61,18 +64,29 @@ public abstract class RequestService implements ActionExecutable {
                 .orElseThrow(InvalidOptionException::new);
     }
 
+    protected String finishAttendance(MessageRequest messageRequest, Attendance attendance, Option option) {
+        return this.finishAttendanceService
+                .configure(botService)
+                .execute(messageRequest, attendance, option);
+    }
+
     protected abstract SelectableOption getFirstItemFinishOption();
 
     protected List<SelectableOption> getFinishOptions() {
         return Arrays.asList(
                 getFirstItemFinishOption(),
                 new SelectableOption("2", "Fazer outro pedido", this::makeOtherRequest),
-                new SelectableOption("3", "Finalizar atendimento", null)
+                new SelectableOption("3", "Finalizar atendimento", this::finishAttendance)
         );
     }
 
     protected String makeOtherRequest(MessageRequest messageRequest, Attendance attendance, Option option) {
-        return null;
+        attendance
+                .setLastMessage(null)
+                .setIndexChildAction(-1);
+
+        messageRequest.setMessage("1");
+        return this.botService.getResponseFromMessage(messageRequest, attendance);
     }
 
     protected void validateQuantity(String message) {

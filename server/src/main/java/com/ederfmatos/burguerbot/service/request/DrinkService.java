@@ -4,6 +4,7 @@ import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.options.Option;
+import com.ederfmatos.burguerbot.service.FinishAttendanceService;
 import com.ederfmatos.burguerbot.service.OptionService;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,8 @@ public class DrinkService extends RequestService {
 
     private final List<ActionExecutable> listeners;
 
-    public DrinkService(OptionService optionService) {
-        super(optionService);
+    public DrinkService(OptionService optionService, FinishAttendanceService finishAttendanceService) {
+        super(optionService, finishAttendanceService);
 
         this.listeners = Arrays.asList(
                 this::getQuantity,
