@@ -22,6 +22,7 @@ public class FinishAttendanceService implements ActionExecutable {
         if (attendance.hasProducts()) {
             return "Informações do pedido\n\n" +
                     "Iniciado às " + attendance.getCreatedAt().format(DateTimeFormatter.ofPattern("HH:mm:ss")) +
+                    "\nFinalizado às " + attendance.getFinishedAt().format(DateTimeFormatter.ofPattern("HH:mm:ss")) +
                     "\n\n" +
                     "Itens:\n\n" +
                     attendance.getProducts().stream()
