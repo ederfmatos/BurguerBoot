@@ -1,22 +1,17 @@
 package com.ederfmatos.burguerbot.model.enumeration;
 
-import com.ederfmatos.burguerbot.model.options.request.Drink;
-import com.ederfmatos.burguerbot.model.options.request.Request;
-import com.ederfmatos.burguerbot.model.options.request.Snack;
-
 public enum RequestEnum {
 
-    SNACK(Snack.class),
-    DRINK(Drink.class);
+    SNACK("\uD83C\uDF54"),
+    DRINK("\uD83C\uDF79");
 
-    private final Class<? extends Request> classAction;
+    private final String emoji;
 
-    RequestEnum(Class<? extends Request> classAction) {
-        this.classAction = classAction;
+    RequestEnum(String emoji) {
+        this.emoji = emoji;
     }
 
-    public Class<? extends Request> getClassAction() {
-        return classAction;
+    public String getEmoji() {
+        return emoji;
     }
-
 }

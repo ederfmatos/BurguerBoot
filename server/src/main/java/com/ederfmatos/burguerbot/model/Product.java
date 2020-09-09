@@ -1,6 +1,7 @@
 package com.ederfmatos.burguerbot.model;
 
 import com.ederfmatos.burguerbot.model.options.Option;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -13,6 +14,7 @@ public class Product extends Option {
     private BigDecimal price;
     private int quantity;
     private String observation;
+    private String emoji;
     private boolean hasObservation;
 
     public Product() {
@@ -25,6 +27,11 @@ public class Product extends Option {
     public Product(String value, String name, BigDecimal price) {
         this(value, name);
         this.price = price;
+    }
+
+    public Product(String value, String name, BigDecimal price, String emoji) {
+        this(value, name, price);
+        this.emoji = emoji;
     }
 
     public int getQuantity() {
@@ -62,6 +69,11 @@ public class Product extends Option {
         return this;
     }
 
+    public Product setEmoji(String emoji) {
+        this.emoji = emoji;
+        return this;
+    }
+
     @Override
     public String format() {
         return String.format("%s - R$ %s", super.toString(), formatPrice(this.getPrice()));
@@ -69,8 +81,10 @@ public class Product extends Option {
 
     @Override
     public String toString() {
+        String name = StringUtils.isNotBlank(emoji) ? emoji + " " + getName() : getName();
+
         final StringBuilder sb = new StringBuilder("");
-        sb.append("Item: ").append(this.getName());
+        sb.append("Item: ").append(name);
         sb.append("\nQuantidade: ").append(quantity);
         sb.append("\nValor unitário: ").append(formatPrice(price));
         sb.append("\nValor total: ").append(formatPrice(getTotalPrice()));
