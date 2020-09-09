@@ -1,7 +1,7 @@
 package com.ederfmatos.burguerbot.model;
 
 import com.ederfmatos.burguerbot.model.options.Option;
-import org.apache.logging.log4j.util.Strings;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
@@ -16,8 +16,12 @@ public class Product extends Option {
     public Product() {
     }
 
-    public Product(String value, String name, BigDecimal price) {
+    public Product(String value, String name) {
         super(value, name);
+    }
+
+    public Product(String value, String name, BigDecimal price) {
+        this(value, name);
         this.price = price;
     }
 
@@ -45,17 +49,22 @@ public class Product extends Option {
 
     @Override
     public String toString() {
-        final StringBuilder sb = new StringBuilder("");
-        sb.append("Pedido: ").append(this.getName());
-        sb.append("Quantidade: ").append(quantity);
-        sb.append("Valor unitário: ").append(price);
-        sb.append("Valor total: ").append(price.multiply(BigDecimal.valueOf(quantity)));
-
-        if (Strings.isNotBlank(observation)) {
-            sb.append("Observação: ").append(observation);
-        }
-
-        return sb.toString();
+        return String.format("%s - %s - R$ %s", StringUtils.leftPad(this.getValue(), 2, "0"), this.getName(), this.getPrice().setScale(2).toPlainString());
     }
+
+//    @Override
+//    public String toString() {
+//        final StringBuilder sb = new StringBuilder("");
+//        sb.append("Pedido: ").append(this.getName());
+//        sb.append("Quantidade: ").append(quantity);
+//        sb.append("Valor unitário: ").append(price);
+//        sb.append("Valor total: ").append(price.multiply(BigDecimal.valueOf(quantity)));
+//
+//        if (Strings.isNotBlank(observation)) {
+//            sb.append("Observação: ").append(observation);
+//        }
+//
+//        return sb.toString();
+//    }
 
 }

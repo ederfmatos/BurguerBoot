@@ -22,7 +22,12 @@ public final class BurguerBotUtils {
     }
 
     public static boolean isNumber(String text) {
-        return text != null && text.matches("/^-?[\\d.]+(?:e-?\\d+)?$/.test(n)");
+        try {
+            Integer.parseInt(text);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.ederfmatos.burguerbot.handler;
 
+import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.service.BotService;
 import com.google.gson.Gson;
 import lombok.Getter;
@@ -29,28 +30,13 @@ public class BurgerBotSocketHandler extends AbstractWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         MessageRequest messageRequest = gson.fromJson(message.getPayload(), MessageRequest.class);
-        messageRequest.id = session.getId();
+        messageRequest.setId(session.getId());
         log.info("Mensagem recebida {} às {}", messageRequest, LocalDateTime.now().format(dateTimeFormatter));
 
         String response = botService.respondMessage(messageRequest);
         session.sendMessage(new TextMessage(response));
     }
 
-    @Getter
-    public static final class MessageRequest {
-        private String id;
-        private String name;
-        private String phoneNumber;
-        private String message;
 
-        @Override
-        public String toString() {
-            return "MessageRequest{" + "id='" + id + '\'' +
-                    ", name='" + name + '\'' +
-                    ", phoneNumber='" + phoneNumber + '\'' +
-                    ", message='" + message + '\'' +
-                    '}';
-        }
-    }
 
 }

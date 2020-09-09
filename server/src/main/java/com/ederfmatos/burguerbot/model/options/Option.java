@@ -1,5 +1,6 @@
 package com.ederfmatos.burguerbot.model.options;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -61,5 +62,9 @@ public class Option {
     public boolean hasOptions() {
         return this.getOptions() != null && this.getOptions().size() > 0;
     }
-    
+
+    @Override
+    public String toString() {
+        return String.format("%s - %s", StringUtils.leftPad(this.getValue(), 2, "0"), this.getName());
+    }
 }

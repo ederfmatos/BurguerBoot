@@ -1,10 +1,8 @@
 package com.ederfmatos.burguerbot.model.options.request;
 
-import com.ederfmatos.burguerbot.exception.InvalidOptionException;
 import com.ederfmatos.burguerbot.model.enumeration.RequestEnum;
 import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
-import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.util.List;
@@ -32,16 +30,6 @@ public class Request extends ActionOption {
 
     public RequestEnum getRequestEnum() {
         return requestEnum;
-    }
-
-    public void validateQuantity(String message) {
-        if (!BurguerBotUtils.isNumber(message)) {
-            throw new InvalidOptionException();
-        }
-
-        if (Integer.parseInt(message) <= 0) {
-            throw new InvalidOptionException("Desculpe, mas você tem que escolher pelo menos 1!");
-        }
     }
 
 }

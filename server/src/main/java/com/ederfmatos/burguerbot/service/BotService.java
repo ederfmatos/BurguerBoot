@@ -2,17 +2,15 @@ package com.ederfmatos.burguerbot.service;
 
 import com.ederfmatos.burguerbot.exception.BurgerBotException;
 import com.ederfmatos.burguerbot.exception.OptionNotImplementedException;
-import com.ederfmatos.burguerbot.handler.BurgerBotSocketHandler.MessageRequest;
 import com.ederfmatos.burguerbot.listener.ActionOptionFactory;
 import com.ederfmatos.burguerbot.model.Attendance;
+import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class BotService {
@@ -62,7 +60,7 @@ public class BotService {
         }
 
         if (option instanceof ActionOption) {
-            return this.actionOptionFactory.getInstance(option).execute(messageRequest, attendance, option);
+            return this.actionOptionFactory.build(option).execute(messageRequest, attendance, option);
         }
 
         throw new OptionNotImplementedException();
@@ -76,7 +74,9 @@ public class BotService {
 
             Option lastOption = this.optionService.findById(this.options, attendance.getLastMessage());
             if (lastOption instanceof ActionOption) {
-                return this.actionOptionFactory.getInstance(lastOption).execute(messageRequest, attendance, lastOption);
+                return this.actionOptionFactory.build(lastOption)
+                        .bind(this)
+                        .execute(messageRequest, attendance, lastOption);
             }
 
             return this.getResponse(messageRequest, attendance, lastOption.getOptions());
