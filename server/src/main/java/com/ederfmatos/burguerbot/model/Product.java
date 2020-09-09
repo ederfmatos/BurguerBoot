@@ -40,6 +40,10 @@ public class Product extends Option {
         return price;
     }
 
+    public BigDecimal getTotalPrice() {
+        return this.price.multiply(BigDecimal.valueOf(this.quantity));
+    }
+
     public String getObservation() {
         return observation;
     }
@@ -69,7 +73,7 @@ public class Product extends Option {
         sb.append("Item: ").append(this.getName());
         sb.append("\nQuantidade: ").append(quantity);
         sb.append("\nValor unitário: ").append(formatPrice(price));
-        sb.append("\nValor total: ").append(formatPrice(price.multiply(BigDecimal.valueOf(quantity))));
+        sb.append("\nValor total: ").append(formatPrice(getTotalPrice()));
 
         if (this.hasObservation()) {
             sb.append("\nObservação: ").append(observation);

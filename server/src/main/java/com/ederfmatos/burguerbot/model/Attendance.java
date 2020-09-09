@@ -116,7 +116,7 @@ public class Attendance {
 
     public BigDecimal getTotalValue() {
         return this.getProducts().stream()
-                .map(Product::getPrice)
+                .map(Product::getTotalPrice)
                 .reduce(BigDecimal::add)
                 .orElse(BigDecimal.ZERO);
     }
