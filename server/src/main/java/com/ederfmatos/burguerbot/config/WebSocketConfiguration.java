@@ -11,6 +11,13 @@ import org.springframework.web.socket.server.standard.ServletServerContainerFact
 @Configuration
 @EnableWebSocket
 public class WebSocketConfiguration implements WebSocketConfigurer {
+
+    private final BurgerBotSocketHandler burgerBotSocketHandler;
+
+    public WebSocketConfiguration(BurgerBotSocketHandler burgerBotSocketHandler) {
+        this.burgerBotSocketHandler = burgerBotSocketHandler;
+    }
+
     @Bean
     public ServletServerContainerFactoryBean createWebSocketContainer() {
         ServletServerContainerFactoryBean container = new ServletServerContainerFactoryBean();
@@ -20,6 +27,6 @@ public class WebSocketConfiguration implements WebSocketConfigurer {
 
     @Override
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
-        registry.addHandler(new BurgerBotSocketHandler(), "/socket").setAllowedOrigins("*");
+        registry.addHandler(burgerBotSocketHandler, "/socket").setAllowedOrigins("*");
     }
 }

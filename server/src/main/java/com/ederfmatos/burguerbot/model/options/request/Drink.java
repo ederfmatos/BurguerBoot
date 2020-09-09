@@ -1,24 +1,13 @@
 package com.ederfmatos.burguerbot.model.options.request;
 
-import com.ederfmatos.burguerbot.model.options.Option;
-import com.ederfmatos.burguerbot.model.Product;
+import com.ederfmatos.burguerbot.model.enumeration.RequestEnum;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.List;
-
+@Document
 public class Drink extends Request {
 
-    public Drink() {
-        super("2", "Bebidas");
-    }
-
-    @Override
-    public List<Option> getOptions() {
-        return Arrays.asList(
-                new Product("1", "Coca cola", BigDecimal.valueOf(6.9)),
-                new Product("2", "Fanta uva", BigDecimal.valueOf(5.9))
-        );
+    public Drink(String value, String name) {
+        super(value, name, RequestEnum.DRINK);
     }
 
 }

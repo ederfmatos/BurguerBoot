@@ -1,5 +1,8 @@
 package com.ederfmatos.burguerbot.model;
 
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Customer {
 
     private final String id;
