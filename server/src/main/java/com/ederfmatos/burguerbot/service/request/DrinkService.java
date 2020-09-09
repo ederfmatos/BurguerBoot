@@ -1,6 +1,6 @@
 package com.ederfmatos.burguerbot.service.request;
 
-import com.ederfmatos.burguerbot.listener.ActionListener;
+import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.options.Option;
@@ -13,7 +13,7 @@ import java.util.List;
 @Service
 public class DrinkService extends RequestService {
 
-    private final List<ActionListener> listeners;
+    private final List<ActionExecutable> listeners;
 
     public DrinkService(OptionService optionService) {
         super(optionService);
@@ -26,7 +26,7 @@ public class DrinkService extends RequestService {
     }
 
     @Override
-    protected List<ActionListener> getListeners() {
+    protected List<ActionExecutable> getListeners() {
         return this.listeners;
     }
 

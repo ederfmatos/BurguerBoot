@@ -1,7 +1,7 @@
 package com.ederfmatos.burguerbot.service.request;
 
 import com.ederfmatos.burguerbot.exception.InvalidOptionException;
-import com.ederfmatos.burguerbot.listener.ActionListener;
+import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.Product;
@@ -15,7 +15,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public abstract class RequestService implements ActionListener {
+public abstract class RequestService implements ActionExecutable {
 
     protected final OptionService optionService;
     protected BotService botService;
@@ -24,10 +24,10 @@ public abstract class RequestService implements ActionListener {
         this.optionService = optionService;
     }
 
-    protected abstract List<ActionListener> getListeners();
+    protected abstract List<ActionExecutable> getListeners();
 
     @Override
-    public ActionListener bind(BotService botService) {
+    public ActionExecutable configure(BotService botService) {
         this.botService = botService;
         return this;
     }
@@ -87,15 +87,15 @@ public abstract class RequestService implements ActionListener {
 
     protected static class SelectableOption extends Option {
 
-        private final ActionListener actionListener;
+        private final ActionExecutable actionExecutable;
 
-        public SelectableOption(String value, String name, ActionListener actionListener) {
+        public SelectableOption(String value, String name, ActionExecutable actionExecutable) {
             super(value, name);
-            this.actionListener = actionListener;
+            this.actionExecutable = actionExecutable;
         }
 
         public String executeAction(MessageRequest messageRequest, Attendance attendance, Option option) {
-            return this.actionListener.execute(messageRequest, attendance, option);
+            return this.actionExecutable.execute(messageRequest, attendance, option);
         }
     }
 
