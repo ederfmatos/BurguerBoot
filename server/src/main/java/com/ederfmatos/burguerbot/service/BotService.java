@@ -60,7 +60,9 @@ public class BotService {
         }
 
         if (option instanceof ActionOption) {
-            return this.actionOptionFactory.build(option).execute(messageRequest, attendance, option);
+            return this.actionOptionFactory.build(option)
+                    .configure(this)
+                    .execute(messageRequest, attendance, option);
         }
 
         throw new OptionNotImplementedException();

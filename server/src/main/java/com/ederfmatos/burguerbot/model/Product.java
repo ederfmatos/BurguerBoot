@@ -12,6 +12,7 @@ public class Product extends Option {
     private BigDecimal price;
     private int quantity;
     private String observation;
+    private boolean hasObservation;
 
     public Product() {
     }
@@ -44,6 +45,15 @@ public class Product extends Option {
 
     public Product setObservation(String observation) {
         this.observation = observation;
+        return this;
+    }
+
+    public boolean hasObservation() {
+        return hasObservation;
+    }
+
+    public Product setHasObservation(boolean hasObservation) {
+        this.hasObservation = hasObservation;
         return this;
     }
 
