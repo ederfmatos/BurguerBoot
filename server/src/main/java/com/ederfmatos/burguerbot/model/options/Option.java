@@ -63,6 +63,10 @@ public class Option {
         return this.getOptions() != null && this.getOptions().size() > 0;
     }
 
+    public String format() {
+        return String.format("%s - %s", StringUtils.leftPad(this.getValue(), 2, "0"), this.getName());
+    }
+
     @Override
     public String toString() {
         return String.format("%s - %s", StringUtils.leftPad(this.getValue(), 2, "0"), this.getName());

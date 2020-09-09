@@ -19,10 +19,7 @@ public class AttendanceService {
     }
 
     public Attendance create(Attendance attendance) {
-        attendance
-                .setId(UUID.randomUUID().toString())
-                .setCreatedAt(LocalDateTime.now());
-
+        attendance.setId(UUID.randomUUID().toString());
         return attendanceRepository.save(attendance);
     }
 
