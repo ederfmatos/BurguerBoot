@@ -1,31 +1,55 @@
 package com.ederfmatos.burguerbot.model;
 
-import com.ederfmatos.burguerbot.model.options.Option;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 
+@Document
 public class Attendance {
 
-    private boolean started;
-    private boolean finished;
-    private final Customer customer;
-    private final List<String> messages;
-    private final List<Product> products;
-    private long createdAt;
-    private Option lastMessage;
+    @Id
+    protected String id;
+    protected Customer customer;
+    protected List<String> messages = new ArrayList<>();
+    protected List<Product> products = new ArrayList<>();
+    protected boolean started;
+    protected boolean finished;
+    protected LocalDateTime createdAt;
+    protected LocalDateTime finishedAt;
+    private String lastMessage;
 
     public Attendance(Customer customer) {
-        this.messages = new ArrayList<>();
-        this.products = new ArrayList<>();
         this.customer = customer;
     }
 
-    public void start() {
-        this.createdAt = new Date().getTime();
-        this.started = true;
+    public String getId() {
+        return id;
+    }
+
+    public Attendance setId(String id) {
+        this.id = id;
+        return this;
+    }
+
+    public Customer getCustomer() {
+        return customer;
+    }
+
+    public List<String> getMessages() {
+        if (this.messages.isEmpty()) {
+            return Collections.emptyList();
+        }
+
+        return Collections.unmodifiableList(this.messages.subList(1, this.messages.size()));
+    }
+
+    public List<Product> getProducts() {
+        return Collections.unmodifiableList(this.products);
     }
 
     public boolean isStarted() {
@@ -36,32 +60,40 @@ public class Attendance {
         return finished;
     }
 
-    public boolean isNotFinished() {
-        return !finished;
-    }
-
-    public void finish() {
-
-    }
-
-    public Customer getCustomer() {
-        return customer;
-    }
-
-    public List<String> getMessages() {
-        if (messages.isEmpty()) {
-            return Collections.emptyList();
-        }
-
-        return Collections.unmodifiableList(messages.subList(1, messages.size()));
-    }
-
-    public List<Product> getProducts() {
-        return products;
-    }
-
-    public long getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
+    }
+
+    public Attendance setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+        return this;
+    }
+
+    public LocalDateTime getFinishedAt() {
+        return finishedAt;
+    }
+
+    public Attendance setFinishedAt(LocalDateTime finishedAt) {
+        this.finishedAt = finishedAt;
+        return this;
+    }
+
+    public String getLastMessage() {
+        return lastMessage;
+    }
+
+    public Attendance setLastMessage(String lastMessage) {
+        this.lastMessage = lastMessage;
+        return this;
+    }
+
+    public void start() {
+        this.createdAt = LocalDateTime.now();
+        this.started = true;
+    }
+
+    public boolean isNotFinished() {
+        return !this.isFinished();
     }
 
     public void addProduct(Product product) {
@@ -77,19 +109,22 @@ public class Attendance {
     }
 
     public void changeLastProduct(Product product) {
-        this.products.add(product);
+        this.products.set(this.products.size() - 1, product);
     }
 
     public boolean hasProducts() {
         return this.products.size() > 0;
     }
 
-    public Option getLastMessage() {
-        return lastMessage;
+    public BigDecimal getTotalValue() {
+        return this.getProducts().stream()
+                .map(Product::getPrice)
+                .reduce(BigDecimal::add)
+                .orElse(BigDecimal.ZERO);
     }
 
-    public Attendance setLastMessage(Option lastMessage) {
-        this.lastMessage = lastMessage;
-        return this;
+    public void finish() {
+
     }
+
 }

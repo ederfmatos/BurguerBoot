@@ -1,37 +1,37 @@
 package com.ederfmatos.burguerbot.model.options.request;
 
 import com.ederfmatos.burguerbot.exception.InvalidOptionException;
-import com.ederfmatos.burguerbot.handler.BurgerBotSocketHandler;
-import com.ederfmatos.burguerbot.model.Attendance;
-import com.ederfmatos.burguerbot.model.options.AbstractOption;
+import com.ederfmatos.burguerbot.model.enumeration.RequestEnum;
+import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
+import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.util.Comparator;
 import java.util.List;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
-public class Request extends AbstractOption {
+@Document
+public class Request extends ActionOption {
+
+    private RequestEnum requestEnum;
 
     public Request() {
-        super("1", "Realizar pedido");
     }
 
     public Request(String value, String name) {
         super(value, name);
     }
 
-    @Override
-    public String execute(BurgerBotSocketHandler.MessageRequest messageRequest, Attendance attendance) {
-        return null;
+    public Request(String value, String name, RequestEnum requestEnum) {
+        this(value, name);
+        this.requestEnum = requestEnum;
     }
 
-    public List<Option> getOptions() {
-        return Stream.of(
-                new Drink(),
-                new Snack()
-        ).sorted(Comparator.comparing(Option::getValue)).collect(Collectors.toList());
+    public Request(String value, String name, List<? extends Option> options) {
+        super(value, name, options);
+    }
+
+    public RequestEnum getRequestEnum() {
+        return requestEnum;
     }
 
     public void validateQuantity(String message) {

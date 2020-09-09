@@ -4,6 +4,7 @@ import com.ederfmatos.burguerbot.service.BotService;
 import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
@@ -13,11 +14,17 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Slf4j
+@Component
 public class BurgerBotSocketHandler extends AbstractWebSocketHandler {
 
-    private final Gson gson = new Gson();
+    private final Gson gson;
     private final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy - hh:mm:ss");
-    private final BotService botService = new BotService();
+    private final BotService botService;
+
+    public BurgerBotSocketHandler(Gson gson, BotService botService) {
+        this.gson = gson;
+        this.botService = botService;
+    }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
