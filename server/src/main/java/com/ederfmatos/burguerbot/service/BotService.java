@@ -75,7 +75,7 @@ public class BotService {
             Option lastOption = this.optionService.findById(this.options, attendance.getLastMessage());
             if (lastOption instanceof ActionOption) {
                 return this.actionOptionFactory.build(lastOption)
-                        .bind(this)
+                        .configure(this)
                         .execute(messageRequest, attendance, lastOption);
             }
 
