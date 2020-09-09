@@ -17,8 +17,6 @@ public class Attendance {
     protected Customer customer;
     protected List<String> messages = new ArrayList<>();
     protected List<Product> products = new ArrayList<>();
-    protected boolean started;
-    protected boolean finished;
     protected LocalDateTime createdAt;
     protected LocalDateTime finishedAt;
     private String lastMessage;
@@ -54,11 +52,11 @@ public class Attendance {
     }
 
     public boolean isStarted() {
-        return started;
+        return this.createdAt != null;
     }
 
     public boolean isFinished() {
-        return finished;
+        return this.finishedAt != null;
     }
 
     public LocalDateTime getCreatedAt() {
@@ -90,7 +88,6 @@ public class Attendance {
 
     public void start() {
         this.createdAt = LocalDateTime.now();
-        this.started = true;
     }
 
     public boolean isNotFinished() {
@@ -139,7 +136,6 @@ public class Attendance {
     }
 
     public void finish() {
-        this.finished = true;
         this.finishedAt = LocalDateTime.now();
     }
 
