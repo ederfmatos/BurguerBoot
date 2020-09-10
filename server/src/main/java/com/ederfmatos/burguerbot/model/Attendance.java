@@ -1,5 +1,7 @@
 package com.ederfmatos.burguerbot.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -15,7 +17,7 @@ public class Attendance {
     @Id
     protected String id;
     protected Customer customer;
-    protected List<String> messages = new ArrayList<>();
+    protected List<Message> messages = new ArrayList<>();
     protected List<Product> products = new ArrayList<>();
     protected LocalDateTime createdAt;
     protected LocalDateTime finishedAt;
@@ -39,12 +41,12 @@ public class Attendance {
         return customer;
     }
 
-    public List<String> getMessages() {
+    public List<Message> getMessages() {
         if (this.messages.isEmpty()) {
             return Collections.emptyList();
         }
 
-        return Collections.unmodifiableList(this.messages.subList(1, this.messages.size()));
+        return Collections.unmodifiableList(this.messages);
     }
 
     public List<Product> getProducts() {
@@ -99,7 +101,7 @@ public class Attendance {
     }
 
     public void addMessage(String message) {
-        this.messages.add(message);
+        this.messages.add(new Message(message));
     }
 
     public Product getLastProduct() {
@@ -139,4 +141,17 @@ public class Attendance {
         this.finishedAt = LocalDateTime.now();
     }
 
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .append("id", id)
+                .append("customer", customer)
+                .append("messages", messages)
+                .append("products", products)
+                .append("createdAt", createdAt)
+                .append("finishedAt", finishedAt)
+                .append("lastMessage", lastMessage)
+                .append("indexChildAction", indexChildAction)
+                .toString();
+    }
 }

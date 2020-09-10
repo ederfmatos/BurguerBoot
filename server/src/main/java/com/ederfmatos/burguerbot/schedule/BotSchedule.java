@@ -1,13 +1,50 @@
 package com.ederfmatos.burguerbot.schedule;
 
-//@EnableScheduling
-//@Component
+import com.ederfmatos.burguerbot.model.Attendance;
+import com.ederfmatos.burguerbot.repository.AttendanceRepository;
+import com.google.gson.Gson;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+
+@EnableScheduling
+@Component
+@Slf4j
 public class BotSchedule {
 
     private static final String CRON_LATE_BOT = "0/30 * * * * *";
 
-    //    @Scheduled(cron = CRON_LATE_BOT)
+    private final AttendanceRepository attendanceRepository;
+    private final Gson gson;
+
+    public BotSchedule(AttendanceRepository attendanceRepository, Gson gson) {
+        this.attendanceRepository = attendanceRepository;
+        this.gson = gson;
+    }
+
+    @Scheduled(cron = CRON_LATE_BOT)
     public void logAttendances() {
+        List<Attendance> attendances = attendanceRepository.findByFinishedAtNull();
+
+        final Predicate<Attendance> exceededWaitingTime = attendance -> (attendance.getMessages().isEmpty() && attendance.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(5)))
+                || attendance.getMessages().get(attendance.getMessages().size() - 1).getDateTime().isBefore(LocalDateTime.now().minusMinutes(1));
+
+        final List<Attendance> stoppedAttendances = attendances.stream()
+                .filter(exceededWaitingTime)
+                .peek(Attendance::finish)
+                .peek(attendance -> log.warn("Atendimento [{}] sendo cancelado por falta de interação", attendance))
+                .collect(Collectors.toList());
+
+        if (!stoppedAttendances.isEmpty()) {
+            log.warn("{} atendimento(s) estão sendo cancelado(s) por falta de interação", stoppedAttendances.size());
+            attendanceRepository.saveAll(stoppedAttendances);
+        }
     }
 
 }
