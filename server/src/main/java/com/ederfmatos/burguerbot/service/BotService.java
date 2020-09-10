@@ -28,12 +28,13 @@ public class BotService {
     }
 
     public String respondMessage(MessageRequest messageRequest) {
-        Attendance attendance = attendanceService.findOrCreate(messageRequest);
-
         try {
+            Attendance attendance = attendanceService.findOrCreate(messageRequest);
+
             if (!attendance.isStarted()) {
                 attendance.start();
                 attendance.addMessage(messageRequest.getMessage());
+                this.attendanceService.save(attendance);
                 return "\uD83C\uDF55" + BurguerBotUtils.getSalutation() + " " + messageRequest.getName() +
                         ", sou Linguini, o chatbot do Rémy`s Burger estarei te atendendo agora \uD83C\uDF55" +
                         "\nPara começar digite a opção desejada:"
@@ -41,9 +42,15 @@ public class BotService {
             }
 
             attendance.addMessage(messageRequest.getMessage());
-            return this.getResponseFromMessage(messageRequest, attendance);
-        } finally {
+            String response = this.getResponseFromMessage(messageRequest, attendance);
             this.attendanceService.save(attendance);
+            return response;
+        } catch (BurgerBotException exception) {
+            exception.showError();
+            return exception.getMessage();
+        } catch (Throwable throwable) {
+            throwable.printStackTrace();
+            return "Ocorreu um erro desconhecido";
         }
     }
 
@@ -69,27 +76,18 @@ public class BotService {
     }
 
     public String getResponseFromMessage(MessageRequest messageRequest, Attendance attendance) {
-        try {
-            if (attendance.getLastMessage() == null) {
-                return this.getResponse(messageRequest, attendance, this.options);
-            }
-
-            Option lastOption = this.optionService.findById(this.options, attendance.getLastMessage());
-            if (lastOption instanceof ActionOption) {
-                return this.actionOptionFactory.build(lastOption)
-                        .configure(this)
-                        .execute(messageRequest, attendance, lastOption);
-            }
-
-            return this.getResponse(messageRequest, attendance, lastOption.getOptions());
-        } catch (BurgerBotException exception) {
-            exception.showError();
-            return exception.getMessage();
-        } catch (Throwable throwable) {
-            throwable.printStackTrace();
-            return "Ocorreu um erro desconhecido";
+        if (attendance.getLastMessage() == null) {
+            return this.getResponse(messageRequest, attendance, this.options);
         }
-    }
 
+        Option lastOption = this.optionService.findById(this.options, attendance.getLastMessage());
+        if (lastOption instanceof ActionOption) {
+            return this.actionOptionFactory.build(lastOption)
+                    .configure(this)
+                    .execute(messageRequest, attendance, lastOption);
+        }
+
+        return this.getResponse(messageRequest, attendance, lastOption.getOptions());
+    }
 
 }
