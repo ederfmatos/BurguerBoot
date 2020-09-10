@@ -4,6 +4,7 @@ import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.repository.AttendanceRepository;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -23,6 +24,9 @@ public class BotSchedule {
     private final AttendanceRepository attendanceRepository;
     private final Gson gson;
 
+    @Value("${bot.responseWaitLimitInMinutes}")
+    private int responseWaitLimitInMinutes;
+
     public BotSchedule(AttendanceRepository attendanceRepository, Gson gson) {
         this.attendanceRepository = attendanceRepository;
         this.gson = gson;
@@ -32,8 +36,8 @@ public class BotSchedule {
     public void logAttendances() {
         List<Attendance> attendances = attendanceRepository.findByFinishedAtNull();
 
-        final Predicate<Attendance> exceededWaitingTime = attendance -> (attendance.getMessages().isEmpty() && attendance.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(5)))
-                || attendance.getMessages().get(attendance.getMessages().size() - 1).getDateTime().isBefore(LocalDateTime.now().minusMinutes(1));
+        final Predicate<Attendance> exceededWaitingTime = attendance -> (attendance.getMessages().isEmpty() && attendance.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)))
+                || attendance.getMessages().get(attendance.getMessages().size() - 1).getDateTime().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes));
 
         final List<Attendance> stoppedAttendances = attendances.stream()
                 .filter(exceededWaitingTime)
