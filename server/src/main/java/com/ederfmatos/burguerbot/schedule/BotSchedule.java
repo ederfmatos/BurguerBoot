@@ -2,7 +2,6 @@ package com.ederfmatos.burguerbot.schedule;
 
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.repository.AttendanceRepository;
-import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -22,14 +21,12 @@ public class BotSchedule {
     private static final String CRON_LATE_BOT = "0/30 * * * * *";
 
     private final AttendanceRepository attendanceRepository;
-    private final Gson gson;
 
     @Value("${bot.responseWaitLimitInMinutes}")
     private int responseWaitLimitInMinutes;
 
-    public BotSchedule(AttendanceRepository attendanceRepository, Gson gson) {
+    public BotSchedule(AttendanceRepository attendanceRepository) {
         this.attendanceRepository = attendanceRepository;
-        this.gson = gson;
     }
 
     @Scheduled(cron = CRON_LATE_BOT)

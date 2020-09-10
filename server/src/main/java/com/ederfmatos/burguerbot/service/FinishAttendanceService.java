@@ -20,6 +20,10 @@ public class FinishAttendanceService implements ActionExecutable {
         attendance.finish();
 
         if (attendance.hasProducts()) {
+            long timeToPrepare = attendance.getTimeToPrepare();
+
+            String waitTimeMessage = getWaitMessage(timeToPrepare);
+
             return "Informações do pedido\n\n" +
                     "Iniciado às " + attendance.getCreatedAt().format(DateTimeFormatter.ofPattern("HH:mm:ss")) +
                     "\nFinalizado às " + attendance.getFinishedAt().format(DateTimeFormatter.ofPattern("HH:mm:ss")) +
@@ -30,10 +34,22 @@ public class FinishAttendanceService implements ActionExecutable {
                             .collect(Collectors.joining("\n\n")) +
                     "\n\n" +
                     "Valor total do pedido: R$ " + BurguerBotUtils.formatPrice(attendance.getTotalValue()) +
-                    "\nTempo de espera: 40 minutos, mas fique tranquilo, estarei entrando em contato se for preciso";
+                    "\n" + waitTimeMessage;
         }
 
         return "Finalizando atendimento \uD83D\uDD96\uD83C\uDF74, muito obrigado por entrar em contato com Rémy`s Burger. " + BurguerBotUtils.getSalutation();
+    }
+
+    private String getWaitMessage(long time) {
+        if (time == 0) {
+            return "Olha, já pode vir buscar, o tempo de espera é de 0 minutos, então só separar tudo aqui e te entregar";
+        }
+
+        if (time < 15) {
+            return "Olha que coisa boa, vai demorar apenas " + time + " minutos. Mas assim que tiver alguma novidade te aviso";
+        }
+
+        return "Olha, o tempo de espera é de " + time + " minutos, mas fique tranquilo, estarei entrando em contato se for preciso";
     }
 
 }

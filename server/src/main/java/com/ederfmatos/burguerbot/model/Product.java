@@ -1,6 +1,7 @@
 package com.ederfmatos.burguerbot.model;
 
 import com.ederfmatos.burguerbot.model.options.Option;
+import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.mapping.Document;
 
@@ -16,6 +17,7 @@ public class Product extends Option {
     private String observation;
     private String emoji;
     private boolean hasObservation;
+    private long preparationTimeInMinutes;
 
     public Product() {
     }
@@ -29,9 +31,9 @@ public class Product extends Option {
         this.price = price;
     }
 
-    public Product(String value, String name, BigDecimal price, String emoji) {
+    public Product(String value, String name, BigDecimal price, long preparationTimeInMinutes) {
         this(value, name, price);
-        this.emoji = emoji;
+        this.preparationTimeInMinutes = preparationTimeInMinutes;
     }
 
     public int getQuantity() {
@@ -71,6 +73,23 @@ public class Product extends Option {
 
     public Product setEmoji(String emoji) {
         this.emoji = emoji;
+        return this;
+    }
+
+    public long getPreparationTimeInMinutes() {
+        if (quantity == 0 || preparationTimeInMinutes == 0) {
+            return preparationTimeInMinutes;
+        }
+
+        if (quantity == 1) {
+            return preparationTimeInMinutes;
+        }
+
+        return BurguerBotUtils.roundUpFive((long) (preparationTimeInMinutes *  quantity * 0.625));
+    }
+
+    public Product setPreparationTimeInMinutes(long preparationTimeInMinutes) {
+        this.preparationTimeInMinutes = preparationTimeInMinutes;
         return this;
     }
 
