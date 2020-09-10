@@ -1,5 +1,6 @@
 package com.ederfmatos.burguerbot.model;
 
+import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.data.annotation.Id;
@@ -153,5 +154,21 @@ public class Attendance {
                 .append("lastMessage", lastMessage)
                 .append("indexChildAction", indexChildAction)
                 .toString();
+    }
+
+    public long getTimeToPrepare() {
+        if (getProducts().size() == 1) {
+            return getProducts().get(0).getPreparationTimeInMinutes();
+        }
+
+        long time = getProducts().stream()
+                .mapToLong(Product::getPreparationTimeInMinutes)
+                .sum();
+
+        if (time % 5 != 0) {
+            time = BurguerBotUtils.roundUpFive(time);
+        }
+
+        return time;
     }
 }

@@ -35,4 +35,8 @@ public final class BurguerBotUtils {
         return "R$ " + price.setScale(2).toPlainString();
     }
 
+    public static long roundUpFive(long number) {
+        return (number + 4) / 5 * 5;
+    }
+
 }

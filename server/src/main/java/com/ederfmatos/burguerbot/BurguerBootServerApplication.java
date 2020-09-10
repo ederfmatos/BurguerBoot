@@ -38,8 +38,8 @@ public class BurguerBootServerApplication implements CommandLineRunner {
 //
 //        Snack lanches = new Snack("1", "Lanches", "\uD83C\uDF54");
 //        lanches.setOptions(Arrays.asList(
-//                new Product("1", "Lanche 1", BigDecimal.valueOf(9.9)),
-//                new Product("2", "Lanche 2", BigDecimal.valueOf(15.9))
+//                new Product("1", "Lanche 1", BigDecimal.valueOf(9.9), 10),
+//                new Product("2", "Lanche 2", BigDecimal.valueOf(15.9), 20)
 //        ));
 //
 //        Drink bebidas = new Drink("2", "Bebidas", "\uD83C\uDF79");
