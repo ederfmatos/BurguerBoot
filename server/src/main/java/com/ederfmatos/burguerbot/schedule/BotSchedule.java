@@ -2,6 +2,7 @@ package com.ederfmatos.burguerbot.schedule;
 
 import com.ederfmatos.burguerbot.handler.BurgerBotSocketHandler;
 import com.ederfmatos.burguerbot.model.Attendance;
+import com.ederfmatos.burguerbot.model.enumeration.AttendanceStateEnum;
 import com.ederfmatos.burguerbot.repository.AttendanceRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -34,8 +35,10 @@ public class BotSchedule {
     public void logAttendances() {
         List<Attendance> attendances = attendanceRepository.findByFinishedAtNull();
 
-        final Predicate<Attendance> exceededWaitingTime = attendance -> (attendance.getMessages().isEmpty() && attendance.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)))
-                || attendance.getMessages().get(attendance.getMessages().size() - 1).getDateTime().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes));
+        final Predicate<Attendance> exceededWaitingTime = attendance ->
+                AttendanceStateEnum.CANCELED != attendance.getState()
+                        && ((attendance.getMessages().isEmpty() && attendance.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)))
+                        || attendance.getMessages().get(attendance.getMessages().size() - 1).getDateTime().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)));
 
         final List<Attendance> stoppedAttendances = attendances.stream()
                 .filter(exceededWaitingTime)
