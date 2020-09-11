@@ -2,6 +2,7 @@ package com.ederfmatos.burguerbot.listener;
 
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
+import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.service.BotService;
 
@@ -12,6 +13,10 @@ public interface ActionExecutable {
 
     default ActionExecutable configure(BotService botService) {
         return this;
+    }
+
+    default boolean isInstanceOf(ActionOption actionOption) {
+        return false;
     }
 
 }

@@ -3,6 +3,7 @@ package com.ederfmatos.burguerbot;
 import com.ederfmatos.burguerbot.model.Product;
 import com.ederfmatos.burguerbot.model.options.FinishAttendanceOption;
 import com.ederfmatos.burguerbot.model.options.Option;
+import com.ederfmatos.burguerbot.model.options.OrderTrackingOption;
 import com.ederfmatos.burguerbot.model.options.request.Drink;
 import com.ederfmatos.burguerbot.model.options.request.Snack;
 import com.ederfmatos.burguerbot.service.OptionService;
@@ -33,7 +34,7 @@ public class BurguerBootServerApplication implements CommandLineRunner {
     @Override
     public void run(String... args) {
 //        Option realizarPedidos = new Option("1", "Realizar pedidos");
-//        Option saberAndamentoDePedido = new Option("2", "Saber andamento de pedido");
+//        Option saberAndamentoDePedido = new OrderTrackingOption("2", "Saber andamento de pedido");
 //        Option finalizarAtendimento = new FinishAttendanceOption("3", "Finalizar atendimento");
 //
 //        Snack lanches = new Snack("1", "Lanches", "\uD83C\uDF54");
