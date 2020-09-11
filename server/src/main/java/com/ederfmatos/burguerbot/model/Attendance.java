@@ -92,6 +92,10 @@ public class Attendance {
         return this;
     }
 
+    public AttendanceStateEnum getState() {
+        return state;
+    }
+
     public void start() {
         this.createdAt = LocalDateTime.now();
     }

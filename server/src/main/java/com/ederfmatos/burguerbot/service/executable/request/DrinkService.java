@@ -1,9 +1,11 @@
-package com.ederfmatos.burguerbot.service.request;
+package com.ederfmatos.burguerbot.service.executable.request;
 
 import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
+import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
+import com.ederfmatos.burguerbot.model.options.request.Drink;
 import com.ederfmatos.burguerbot.service.FinishAttendanceService;
 import com.ederfmatos.burguerbot.service.OptionService;
 import org.springframework.stereotype.Service;
@@ -50,5 +52,10 @@ public class DrinkService extends RequestService {
         this.validateQuantity(messageRequest.getMessage());
         attendance.changeLastProduct(attendance.getLastProduct().setQuantity(Integer.parseInt(messageRequest.getMessage())));
         return super.chooseOptionsFinish(messageRequest, attendance, option);
+    }
+
+    @Override
+    public boolean isInstanceOf(ActionOption actionOption) {
+        return actionOption instanceof Drink;
     }
 }

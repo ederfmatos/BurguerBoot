@@ -67,7 +67,7 @@ public class BotService {
         }
 
         if (option instanceof ActionOption) {
-            return this.actionOptionFactory.build(option)
+            return this.actionOptionFactory.build((ActionOption) option)
                     .configure(this)
                     .execute(messageRequest, attendance, option);
         }
@@ -82,7 +82,7 @@ public class BotService {
 
         Option lastOption = this.optionService.findById(this.options, attendance.getLastMessage());
         if (lastOption instanceof ActionOption) {
-            return this.actionOptionFactory.build(lastOption)
+            return this.actionOptionFactory.build((ActionOption) lastOption)
                     .configure(this)
                     .execute(messageRequest, attendance, lastOption);
         }
