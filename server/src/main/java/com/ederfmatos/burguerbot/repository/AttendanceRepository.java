@@ -11,7 +11,7 @@ import java.util.stream.Stream;
 @Repository
 public interface AttendanceRepository extends MongoRepository<Attendance, String> {
 
-    List<Attendance> findByFinishedAtNull();
+    Stream<Attendance> findByFinishedAtNull();
 
     Stream<Attendance> findByCustomerIdAndFinishedAtNotNull(String customerId);
 
