@@ -1,5 +1,6 @@
 package com.ederfmatos.burguerbot.model;
 
+import com.ederfmatos.burguerbot.model.enumeration.AttendanceStateEnum;
 import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -24,9 +25,11 @@ public class Attendance {
     protected LocalDateTime finishedAt;
     private String lastMessage;
     private int indexChildAction = -1;
+    private AttendanceStateEnum state;
 
     public Attendance(Customer customer) {
         this.customer = customer;
+        this.state = AttendanceStateEnum.OPENED;
     }
 
     public String getId() {
@@ -140,6 +143,12 @@ public class Attendance {
 
     public void finish() {
         this.finishedAt = LocalDateTime.now();
+        this.state = AttendanceStateEnum.PREPARING;
+    }
+
+    public void cancel() {
+        this.finishedAt = LocalDateTime.now();
+        this.state = AttendanceStateEnum.CANCELED;
     }
 
     @Override

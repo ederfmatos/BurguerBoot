@@ -39,8 +39,8 @@ public class BotSchedule {
 
         final List<Attendance> stoppedAttendances = attendances.stream()
                 .filter(exceededWaitingTime)
-                .peek(Attendance::finish)
                 .peek(attendance -> log.warn("Atendimento [{}] sendo cancelado por falta de interação", attendance))
+                .peek(Attendance::cancel)
                 .collect(Collectors.toList());
 
         if (!stoppedAttendances.isEmpty()) {
