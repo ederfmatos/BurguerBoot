@@ -1,5 +1,6 @@
 package com.ederfmatos.burguerbot.schedule;
 
+import com.ederfmatos.burguerbot.handler.BurgerBotSocketHandler;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.repository.AttendanceRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -44,7 +45,11 @@ public class BotSchedule {
 
         if (!stoppedAttendances.isEmpty()) {
             log.warn("{} atendimento(s) estão sendo cancelado(s) por falta de interação", stoppedAttendances.size());
-            attendanceRepository.saveAll(stoppedAttendances);
+            stoppedAttendances.forEach(attendance -> {
+                if (BurgerBotSocketHandler.send("Atendimento sendo finalizado por falta de interação, todos os pedidos feitos serão desconsiderados!")) {
+                    attendanceRepository.save(attendance);
+                }
+            });
         }
     }
 
