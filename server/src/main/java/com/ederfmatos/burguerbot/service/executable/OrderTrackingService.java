@@ -1,6 +1,5 @@
 package com.ederfmatos.burguerbot.service.executable;
 
-import com.ederfmatos.burguerbot.exception.InvalidOptionException;
 import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
@@ -35,6 +34,12 @@ public class OrderTrackingService implements ActionExecutable {
 
         attendance.setLastMessage(null);
 
+        if (attendances.size() > 1) {
+            return "Oba";
+        }
+
+        attendance.finish();
+
         if (attendances.isEmpty()) {
             attendance
                     .setLastMessage(null)
@@ -42,14 +47,9 @@ public class OrderTrackingService implements ActionExecutable {
 
             messageRequest.setMessage("1");
             return "Desculpe, não existe nenhum pedido pendente para você\n\n" + this.botService.getResponseFromMessage(messageRequest, attendance);
-//            throw new InvalidOptionException("Desculpe, não existe nenhum pedido pendente para você");
         }
 
-        if(attendances.size() == 1) {
-            return this.handleTrackingForAttendance(attendances.get(0));
-        }
-
-        return "Ainda não implementado";
+        return this.handleTrackingForAttendance(attendances.get(0));
     }
 
     private String handleTrackingForAttendance(Attendance attendance) {
