@@ -39,7 +39,6 @@ public class BurgerBotSocketHandler extends AbstractWebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
-        System.out.println("Oba");
         BurgerBotSocketHandler.session = session;
         super.afterConnectionEstablished(session);
     }

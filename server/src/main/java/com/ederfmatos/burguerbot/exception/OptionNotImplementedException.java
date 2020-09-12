@@ -1,9 +1,11 @@
 package com.ederfmatos.burguerbot.exception;
 
+import com.ederfmatos.burguerbot.utils.BurgerBotMessages;
+
 public class OptionNotImplementedException extends BurgerBotException {
 
     public OptionNotImplementedException() {
-        super("Opção não implementada");
+        super(BurgerBotMessages.from("errors.option_not_implemented").string());
     }
 
 }

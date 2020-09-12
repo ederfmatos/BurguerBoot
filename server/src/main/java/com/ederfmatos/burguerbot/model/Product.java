@@ -1,6 +1,7 @@
 package com.ederfmatos.burguerbot.model;
 
 import com.ederfmatos.burguerbot.model.options.Option;
+import com.ederfmatos.burguerbot.utils.BurgerBotMessages;
 import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -103,13 +104,13 @@ public class Product extends Option {
         String name = StringUtils.isNotBlank(emoji) ? emoji + " " + getName() : getName();
 
         final StringBuilder sb = new StringBuilder("");
-        sb.append("Item: ").append(name);
-        sb.append("\nQuantidade: ").append(quantity);
-        sb.append("\nValor unitário: ").append(formatPrice(price));
-        sb.append("\nValor total: ").append(formatPrice(getTotalPrice()));
+        sb.append(name).append("\n");
+        sb.append(BurgerBotMessages.from("labels.quantity")).append(": ").append(quantity).append("\n");
+        sb.append(BurgerBotMessages.from("labels.unity_value")).append(": ").append(formatPrice(price)).append("\n");
+        sb.append(BurgerBotMessages.from("labels.total_value")).append(": ").append(formatPrice(getTotalPrice()));
 
         if (this.hasObservation()) {
-            sb.append("\nObservação: ").append(observation);
+            sb.append("\n").append(BurgerBotMessages.from("labels.observation")).append(": ").append(observation);
         }
 
         return sb.toString();
