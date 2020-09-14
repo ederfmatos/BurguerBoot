@@ -1,5 +1,6 @@
 package com.ederfmatos.burguerbot.service.executable;
 
+import com.ederfmatos.burguerbot.exception.InvalidOptionException;
 import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
@@ -47,6 +48,29 @@ public abstract class ActionService implements ActionExecutable {
     @Override
     public boolean isInstanceOf(ActionOption actionOption) {
         return true;
+    }
+
+    protected String handleNewOrder(MessageRequest messageRequest, Attendance attendance, Option option) {
+        if ("1".equals(messageRequest.getMessage())) {
+            attendance
+                    .setLastMessage(null)
+                    .setIndexChildAction(-1);
+
+            messageRequest.setMessage("1");
+            return this.botService.getResponseFromMessage(messageRequest, attendance);
+        }
+
+        if ("2".equals(messageRequest.getMessage())) {
+            return this.finishAttendance(messageRequest, attendance, option);
+        }
+
+        throw new InvalidOptionException();
+    }
+
+    protected String getNewOrderMessage() {
+        return "Deseja realizar um pedido?" +
+                "\n01 - Sim" +
+                "\n02 - Não";
     }
 
 }
