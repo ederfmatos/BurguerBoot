@@ -96,7 +96,7 @@ public class Product extends Option {
 
     @Override
     public String format() {
-        return String.format("%s - R$ %s", super.toString(), formatPrice(this.getPrice()));
+        return String.format("%s - %s", super.toString(), formatPrice(this.getPrice()));
     }
 
     @Override
@@ -105,12 +105,12 @@ public class Product extends Option {
 
         final StringBuilder sb = new StringBuilder("");
         sb.append(name).append("\n");
-        sb.append(BurgerBotMessages.from("labels.quantity")).append(": ").append(quantity).append("\n");
-        sb.append(BurgerBotMessages.from("labels.unity_value")).append(": ").append(formatPrice(price)).append("\n");
-        sb.append(BurgerBotMessages.from("labels.total_value")).append(": ").append(formatPrice(getTotalPrice()));
+        sb.append(BurgerBotMessages.from("labels.quantity").string()).append(": ").append(quantity).append("\n");
+        sb.append(BurgerBotMessages.from("labels.unity_value").string()).append(": ").append(formatPrice(price)).append("\n");
+        sb.append(BurgerBotMessages.from("labels.total_value").string()).append(": ").append(formatPrice(getTotalPrice()));
 
         if (this.hasObservation()) {
-            sb.append("\n").append(BurgerBotMessages.from("labels.observation")).append(": ").append(observation);
+            sb.append("\n").append(BurgerBotMessages.from("labels.observation").string()).append(": ").append(observation);
         }
 
         return sb.toString();
