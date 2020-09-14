@@ -1,0 +1,23 @@
+package com.ederfmatos.burguerbot.model.enumeration;
+
+public enum EmojiEnum {
+
+    DRINK("\uD83E\uDD43"),
+    BURGER("\uD83C\uDF54"),
+    WATCH("⏰"),
+    ESTABLISHMENT("\uD83C\uDFEF"),
+    PHONE("\uD83D\uDCF1"),
+    HEARTH("❤"),
+    CRY("\uD83D\uDE30");
+
+    private final String emoji;
+
+    EmojiEnum(String emoji) {
+        this.emoji = emoji;
+    }
+
+    @Override
+    public String toString() {
+        return this.emoji;
+    }
+}

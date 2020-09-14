@@ -1,6 +1,7 @@
 package com.ederfmatos.burguerbot.config;
 
 import com.ederfmatos.burguerbot.model.Product;
+import com.ederfmatos.burguerbot.model.enumeration.EmojiEnum;
 import com.ederfmatos.burguerbot.model.options.CommentOption;
 import com.ederfmatos.burguerbot.model.options.FinishAttendanceOption;
 import com.ederfmatos.burguerbot.model.options.Option;
@@ -32,13 +33,13 @@ public class AppRunner {
             Option elogiarCriticar = new CommentOption("3", "Deixar um elogio/critica");
             Option finalizarAtendimento = new FinishAttendanceOption("4", "Finalizar atendimento");
 
-            Snack lanches = new Snack("1", "Lanches", "\uD83C\uDF54");
+            Snack lanches = new Snack("1", "Lanches", EmojiEnum.BURGER.toString());
             lanches.setOptions(Arrays.asList(
                     new Product("1", "Lanche 1", BigDecimal.valueOf(9.9), 10),
                     new Product("2", "Lanche 2", BigDecimal.valueOf(15.9), 20)
             ));
 
-            Drink bebidas = new Drink("2", "Bebidas", "\uD83C\uDF79");
+            Drink bebidas = new Drink("2", "Bebidas", EmojiEnum.DRINK.toString());
             bebidas.setOptions(Arrays.asList(
                     new Product("1", "Bebida 1", BigDecimal.valueOf(9.9)),
                     new Product("2", "Bebida 2", BigDecimal.valueOf(15.9)),

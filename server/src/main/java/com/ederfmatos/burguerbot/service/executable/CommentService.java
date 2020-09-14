@@ -3,6 +3,7 @@ package com.ederfmatos.burguerbot.service.executable;
 import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
+import com.ederfmatos.burguerbot.model.enumeration.EmojiEnum;
 import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.CommentOption;
 import com.ederfmatos.burguerbot.model.options.Option;
@@ -31,7 +32,7 @@ public class CommentService extends ActionService {
     }
 
     private String handleCommentMessage(MessageRequest messageRequest, Attendance attendance, Option option) {
-        return "Muito obrigado pela mensagem.\n\n" +
+        return "Muito obrigado pela mensagem." + EmojiEnum.HEARTH + "\n\n" +
                 this.getNewOrderMessage();
     }
 
