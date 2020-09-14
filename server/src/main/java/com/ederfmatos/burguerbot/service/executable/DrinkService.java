@@ -1,4 +1,4 @@
-package com.ederfmatos.burguerbot.service.executable.request;
+package com.ederfmatos.burguerbot.service.executable;
 
 import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;

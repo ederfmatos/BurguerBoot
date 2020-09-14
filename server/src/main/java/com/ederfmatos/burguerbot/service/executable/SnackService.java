@@ -1,4 +1,4 @@
-package com.ederfmatos.burguerbot.service.executable.request;
+package com.ederfmatos.burguerbot.service.executable;
 
 import com.ederfmatos.burguerbot.exception.InvalidOptionException;
 import com.ederfmatos.burguerbot.listener.ActionExecutable;
@@ -6,7 +6,6 @@ import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
-import com.ederfmatos.burguerbot.model.options.request.Drink;
 import com.ederfmatos.burguerbot.model.options.request.Snack;
 import com.ederfmatos.burguerbot.service.FinishAttendanceService;
 import com.ederfmatos.burguerbot.service.OptionService;

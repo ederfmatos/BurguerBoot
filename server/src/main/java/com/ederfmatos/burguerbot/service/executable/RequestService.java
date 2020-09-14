@@ -1,4 +1,4 @@
-package com.ederfmatos.burguerbot.service.executable.request;
+package com.ederfmatos.burguerbot.service.executable;
 
 import com.ederfmatos.burguerbot.exception.InvalidOptionException;
 import com.ederfmatos.burguerbot.listener.ActionExecutable;
@@ -8,7 +8,6 @@ import com.ederfmatos.burguerbot.model.Product;
 import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.model.options.request.Request;
-import com.ederfmatos.burguerbot.service.BotService;
 import com.ederfmatos.burguerbot.service.FinishAttendanceService;
 import com.ederfmatos.burguerbot.service.OptionService;
 import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
@@ -18,24 +17,13 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public abstract class RequestService implements ActionExecutable {
-
-    protected final OptionService optionService;
-    protected final FinishAttendanceService finishAttendanceService;
-    protected BotService botService;
+public abstract class RequestService extends ActionService {
 
     public RequestService(OptionService optionService, FinishAttendanceService finishAttendanceService) {
-        this.optionService = optionService;
-        this.finishAttendanceService = finishAttendanceService;
+        super(optionService, finishAttendanceService);
     }
 
     protected abstract List<ActionExecutable> getListeners();
-
-    @Override
-    public ActionExecutable configure(BotService botService) {
-        this.botService = botService;
-        return this;
-    }
 
     @Override
     public String execute(MessageRequest messageRequest, Attendance attendance, Option option) {
@@ -43,8 +31,7 @@ public abstract class RequestService implements ActionExecutable {
             option = this.optionService.getOptionFromMessage(messageRequest.getMessage(), option.getOptions());
         }
 
-        attendance.incrementIndexChildAction();
-        return getListeners().get(attendance.getIndexChildAction()).execute(messageRequest, attendance, option);
+        return super.execute(messageRequest, attendance, option);
     }
 
     protected String getQuantity(MessageRequest messageRequest, Attendance attendance, Option option) {
@@ -57,19 +44,12 @@ public abstract class RequestService implements ActionExecutable {
         return "Ok, o que mais você deseja? \n\n" + this.optionService.formatOptions(this.getFinishOptions());
     }
 
-
     protected String handleFinishOptions(MessageRequest messageRequest, Attendance attendance, Option option) {
         return this.getFinishOptions().stream()
                 .filter(opt -> opt.getValue().equals(messageRequest.getMessage()))
                 .findFirst()
                 .map(opt -> opt.executeAction(messageRequest, attendance, option))
                 .orElseThrow(InvalidOptionException::new);
-    }
-
-    protected String finishAttendance(MessageRequest messageRequest, Attendance attendance, Option option) {
-        return this.finishAttendanceService
-                .configure(botService)
-                .execute(messageRequest, attendance, option);
     }
 
     protected abstract SelectableOption getFirstItemFinishOption();
