@@ -4,6 +4,8 @@ import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.Product;
+import com.ederfmatos.burguerbot.model.options.ActionOption;
+import com.ederfmatos.burguerbot.model.options.FinishAttendanceOption;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.utils.BurguerBotUtils;
 import org.springframework.stereotype.Service;
@@ -52,4 +54,8 @@ public class FinishAttendanceService implements ActionExecutable {
         return "Olha, o tempo de espera é de " + time + " minutos, mas fique tranquilo, estarei entrando em contato se for preciso";
     }
 
+    @Override
+    public boolean isInstanceOf(ActionOption actionOption) {
+        return actionOption instanceof FinishAttendanceOption;
+    }
 }
