@@ -32,10 +32,10 @@ public class InformationService extends ActionService {
     public String showInformations(MessageRequest messageRequest, Attendance attendance, Option option) {
         return EmojiEnum.BURGER + " Rémy's Burger - Mais sabor para sua vida\n" +
                 "\n" + EmojiEnum.WATCH + " Horário de atendimento:\n" +
-                "\nSegunda-feira: Fechado" +
-                "\nTerça à Sexta: 19:00 - 00:00" +
-                "\nSábado e feriados: 19:00 - 01:00" +
-                "\nDomingos: 19:00 - 00:00\n" +
+                "\nSegunda-feira: \t\t\tFechado" +
+                "\nTerça à Sexta: \t\t19:00 - 00:00" +
+                "\nSábado e feriados: \t\t19:00 - 01:00" +
+                "\nDomingos: \t\t\t19:00 - 00:00\n" +
                 "\n" + EmojiEnum.ESTABLISHMENT + " Endereço:" +
                 "\nRua Nove de Julho, 456, Centro, Guariba\n" +
                 "\n" + EmojiEnum.PHONE + " Telefones:" +

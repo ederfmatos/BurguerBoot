@@ -8,7 +8,9 @@ public enum EmojiEnum {
     ESTABLISHMENT("\uD83C\uDFEF"),
     PHONE("\uD83D\uDCF1"),
     HEARTH("❤"),
-    CRY("\uD83D\uDE30");
+    CRY("\uD83D\uDE30"),
+    NOTES("\uD83D\uDCDD"),
+    ;
 
     private final String emoji;
 

@@ -4,6 +4,7 @@ import com.ederfmatos.burguerbot.exception.InvalidOptionException;
 import com.ederfmatos.burguerbot.listener.ActionExecutable;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
+import com.ederfmatos.burguerbot.model.enumeration.EmojiEnum;
 import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.service.BotService;
@@ -68,7 +69,7 @@ public abstract class ActionService implements ActionExecutable {
     }
 
     protected String getNewOrderMessage() {
-        return "Deseja realizar um pedido?" +
+        return EmojiEnum.NOTES +  " Deseja realizar um pedido?" +
                 "\n01 - Sim" +
                 "\n02 - Não";
     }

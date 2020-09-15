@@ -23,15 +23,8 @@ public class AttendanceService {
     @Value("${bot.responseWaitLimitInMinutes}")
     private int responseWaitLimitInMinutes;
 
-    private final Predicate<Attendance> exceededWaitingTime;
-
-
     public AttendanceService(AttendanceRepository attendanceRepository) {
         this.attendanceRepository = attendanceRepository;
-        this.exceededWaitingTime = attendance ->
-                AttendanceStateEnum.CANCELED != attendance.getState()
-                        && ((attendance.getMessages().isEmpty() && attendance.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)))
-                        || attendance.getMessages().get(attendance.getMessages().size() - 1).getDateTime().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)));
     }
 
     public Attendance create(Attendance attendance) {
@@ -50,6 +43,11 @@ public class AttendanceService {
     }
 
     public Stream<Attendance> findAttendancesToCancel() {
+        final Predicate<Attendance> exceededWaitingTime = attendance ->
+                AttendanceStateEnum.CANCELED != attendance.getState()
+                        && ((attendance.getMessages().isEmpty() && attendance.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)))
+                        || attendance.getMessages().get(attendance.getMessages().size() - 1).getDateTime().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)));
+
         return attendanceRepository.findByFinishedAtNull()
                 .filter(exceededWaitingTime);
     }
