@@ -110,6 +110,12 @@
 </main>
 </body>
 <script>
+    const socket = new WebSocket("ws://localhost:8080/socket");
+
+    socket.onmessage = function (event) {
+        createMessage({ myMessage: false, message: event.data });
+    };
+
     const $ = document.querySelector.bind(document);
     const sendButton = $("#sendButton");
     const inputText = $("#inputText");
@@ -137,6 +143,12 @@
       if (message && message.trim()) {
         createMessage({ myMessage: true, message });
         inputText.value = "";
+        socket.send(JSON.stringify({
+            message,
+            id: '5516999644153@c.us',
+            name: 'Eder Matos',
+            phoneNumber: '16999644153'
+        }));
       }
 
       inputText.focus();
