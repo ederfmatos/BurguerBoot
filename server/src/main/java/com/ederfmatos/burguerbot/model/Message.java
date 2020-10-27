@@ -1,5 +1,8 @@
 package com.ederfmatos.burguerbot.model;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.time.LocalDateTime;
 
 public class Message {
@@ -29,4 +32,13 @@ public class Message {
         this.dateTime = dateTime;
         return this;
     }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this, ToStringStyle.JSON_STYLE)
+                .append("message", message)
+                .append("dateTime", dateTime)
+                .toString();
+    }
+
 }

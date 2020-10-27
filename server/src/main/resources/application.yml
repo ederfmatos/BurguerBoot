@@ -8,4 +8,4 @@ spring:
       port: 27017
       database: burguerbot
 bot:
-  responseWaitLimitInMinutes: 5
+  responseWaitLimitInMinutes: 1

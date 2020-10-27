@@ -1,38 +1,39 @@
 package com.ederfmatos.burguerbot.model;
 
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.annotation.Id;
+
+import java.time.LocalDateTime;
 
 @Document
-public class Customer {
+public class Comment {
 
+    @Id
     private final String id;
-    private final String name;
-    private final String phoneNumber;
+    private final Customer customer;
+    private final String text;
+    private final LocalDateTime createdAt;
 
-    public Customer(String id, String name, String phoneNumber) {
+    public Comment(String id, Customer customer, String text, LocalDateTime createdAt) {
         this.id = id;
-        this.name = name;
-        this.phoneNumber = phoneNumber;
+        this.customer = customer;
+        this.text = text;
+        this.createdAt = createdAt;
     }
 
     public String getId() {
         return id;
     }
 
-    public String getName() {
-        return name;
+    public Customer getCustomer() {
+        return customer;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
+    public String getText() {
+        return text;
     }
 
-    @Override
-    public String toString() {
-        return "Customer{" +
-                "id='" + id + '\'' +
-                ", name='" + name + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
     }
 }

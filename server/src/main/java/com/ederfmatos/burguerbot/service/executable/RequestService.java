@@ -54,10 +54,13 @@ public abstract class RequestService extends ActionService {
 
     protected abstract SelectableOption getFirstItemFinishOption();
 
+    protected abstract SelectableOption getSecondItemFinishOption();
+
     protected List<SelectableOption> getFinishOptions() {
         return Arrays.asList(
                 getFirstItemFinishOption(),
-                new SelectableOption("2", "Fazer outro pedido", this::makeOtherRequest),
+                getSecondItemFinishOption(),
+//                new SelectableOption("2", "Fazer outro pedido", this::makeOtherRequest),
                 new SelectableOption("3", "Finalizar atendimento", this::finishAttendance)
         );
     }
@@ -98,6 +101,24 @@ public abstract class RequestService extends ActionService {
     @Override
     public boolean isInstanceOf(ActionOption actionOption) {
         return actionOption instanceof Request;
+    }
+
+    protected String makeOtherDrink(MessageRequest messageRequest, Attendance attendance, Option option) {
+        attendance
+                .setLastMessage(optionService.getFirstOption().getId())
+                .setIndexChildAction(-1);
+
+        messageRequest.setMessage("2");
+        return this.botService.getResponseFromMessage(messageRequest, attendance);
+    }
+
+    protected String makeOtherSnack(MessageRequest messageRequest, Attendance attendance, Option option) {
+        attendance
+                .setLastMessage(optionService.getFirstOption().getId())
+                .setIndexChildAction(-1);
+
+        messageRequest.setMessage("1");
+        return this.botService.getResponseFromMessage(messageRequest, attendance);
     }
 
 }

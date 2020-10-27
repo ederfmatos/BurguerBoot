@@ -41,13 +41,9 @@ public class SnackService extends RequestService {
         return new SelectableOption("1", "Pedir outro lanche", this::makeOtherSnack);
     }
 
-    protected String makeOtherSnack(MessageRequest messageRequest, Attendance attendance, Option option) {
-        attendance
-                .setLastMessage(optionService.getFirstOption().getId())
-                .setIndexChildAction(-1);
-
-        messageRequest.setMessage("1");
-        return this.botService.getResponseFromMessage(messageRequest, attendance);
+    @Override
+    protected SelectableOption getSecondItemFinishOption() {
+        return new SelectableOption("2", "Pedir uma bebida", this::makeOtherDrink);
     }
 
     private String getObservation(MessageRequest messageRequest, Attendance attendance, Option option) {

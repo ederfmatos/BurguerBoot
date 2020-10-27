@@ -34,9 +34,11 @@ class App {
   isBlockedMessage(message) {
     return ![
       'Raul Avezu',
+      'Allan Henrique',
       'Brenda Lorençon',
       'Daniel Donatto',
-      'Marcela Oliveira',
+      'Isabela',
+      'Talison',
     ].includes(message.sender.name);
   }
 }

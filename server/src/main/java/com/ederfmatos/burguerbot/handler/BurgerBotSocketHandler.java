@@ -1,6 +1,8 @@
 package com.ederfmatos.burguerbot.handler;
 
+import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
+import com.ederfmatos.burguerbot.model.MessageResponse;
 import com.ederfmatos.burguerbot.service.BotService;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
@@ -15,22 +17,28 @@ import java.io.IOException;
 @Component
 public class BurgerBotSocketHandler extends AbstractWebSocketHandler {
 
-    private final Gson gson;
+    private static final Gson gson = new Gson();
     private final BotService botService;
     private static WebSocketSession session;
 
-    public BurgerBotSocketHandler(Gson gson, BotService botService) {
-        this.gson = gson;
+    public BurgerBotSocketHandler(BotService botService) {
         this.botService = botService;
     }
 
-    public static boolean send(String message) {
+    public static boolean send(Attendance attendance, String message) {
         if (session == null) {
             return false;
         }
 
         try {
-            session.sendMessage(new TextMessage(message));
+            MessageResponse messageResponse = MessageResponse.builder()
+                    .id(attendance.getCustomer().getId())
+                    .message(message)
+                    .name(attendance.getCustomer().getName())
+                    .phoneNumber(attendance.getCustomer().getPhoneNumber())
+                    .build();
+
+            sendMessage(session, messageResponse);
             return true;
         } catch (IOException e) {
             return false;
@@ -46,13 +54,22 @@ public class BurgerBotSocketHandler extends AbstractWebSocketHandler {
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws IOException {
         MessageRequest messageRequest = gson.fromJson(message.getPayload(), MessageRequest.class);
-        messageRequest.setId(session.getId());
         log.info("Mensagem recebida {}", messageRequest);
 
         String response = botService.respondMessage(messageRequest);
-        session.sendMessage(new TextMessage(response));
+
+        MessageResponse messageResponse = MessageResponse.builder()
+                .id(messageRequest.getId())
+                .message(response)
+                .name(messageRequest.getName())
+                .phoneNumber(messageRequest.getPhoneNumber())
+                .build();
+
+        sendMessage(session, messageResponse);
     }
 
-
+    private static void sendMessage(WebSocketSession session, MessageResponse messageResponse) throws IOException {
+        session.sendMessage(new TextMessage(gson.toJson(messageResponse)));
+    }
 
 }

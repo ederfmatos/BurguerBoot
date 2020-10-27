@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.UUID;
 import java.util.function.Predicate;
 import java.util.stream.Stream;
@@ -44,7 +45,7 @@ public class AttendanceService {
 
     public Stream<Attendance> findAttendancesToCancel() {
         final Predicate<Attendance> exceededWaitingTime = attendance ->
-                AttendanceStateEnum.CANCELED != attendance.getState()
+                (!Arrays.asList(AttendanceStateEnum.CANCELED, AttendanceStateEnum.PREPARING, AttendanceStateEnum.FINISHING).contains(attendance.getState()))
                         && ((attendance.getMessages().isEmpty() && attendance.getCreatedAt().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)))
                         || attendance.getMessages().get(attendance.getMessages().size() - 1).getDateTime().isBefore(LocalDateTime.now().minusMinutes(responseWaitLimitInMinutes)));
 

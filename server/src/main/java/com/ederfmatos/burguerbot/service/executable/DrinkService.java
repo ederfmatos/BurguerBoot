@@ -38,13 +38,9 @@ public class DrinkService extends RequestService {
         return new SelectableOption("1", "Pedir outra bebida", this::makeOtherDrink);
     }
 
-    protected String makeOtherDrink(MessageRequest messageRequest, Attendance attendance, Option option) {
-        attendance
-                .setLastMessage(optionService.getFirstOption().getId())
-                .setIndexChildAction(-1);
-
-        messageRequest.setMessage("2");
-        return this.botService.getResponseFromMessage(messageRequest, attendance);
+    @Override
+    protected SelectableOption getSecondItemFinishOption() {
+        return new SelectableOption("2", "Pedir um lanche", this::makeOtherSnack);
     }
 
     @Override

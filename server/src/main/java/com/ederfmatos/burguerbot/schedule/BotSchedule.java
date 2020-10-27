@@ -25,7 +25,7 @@ public class BotSchedule {
     public void logAttendances() {
         attendanceService
                 .findAttendancesToCancel()
-                .filter(attendance -> BurgerBotSocketHandler.send("Atendimento sendo finalizado por falta de interação, todos os pedidos feitos serão desconsiderados!"))
+                .filter(attendance -> BurgerBotSocketHandler.send(attendance, "Atendimento sendo finalizado por falta de interação, todos os pedidos feitos serão desconsiderados!"))
                 .peek(attendance -> log.warn("Atendimento [{}] sendo cancelado por falta de interação", attendance))
                 .peek(Attendance::cancel)
                 .forEach(attendanceService::save);
