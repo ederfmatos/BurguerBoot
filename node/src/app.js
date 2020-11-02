@@ -20,7 +20,7 @@ export default class App {
       Logger.start('Iniciando aplicação');
 
       const browser = await puppeteer.launch({
-        headless: true,
+        headless: false,
         userDataDir: join(process.cwd(), 'ChromeSession'),
         devtools: false,
         args: [...constants.DEFAULT_CHROMIUM_ARGS],

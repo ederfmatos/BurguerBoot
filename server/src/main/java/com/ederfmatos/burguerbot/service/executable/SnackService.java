@@ -46,6 +46,11 @@ public class SnackService extends RequestService {
         return new SelectableOption("2", "Pedir uma bebida", this::makeOtherDrink);
     }
 
+    @Override
+    protected SelectableOption getThirdItemFinishOption() {
+        return new SelectableOption("3", "Pedir uma porção", this::makeOtherPortion);
+    }
+
     private String getObservation(MessageRequest messageRequest, Attendance attendance, Option option) {
         this.validateQuantity(messageRequest.getMessage());
         attendance.changeLastProduct(attendance.getLastProduct().setQuantity(Integer.parseInt(messageRequest.getMessage())));

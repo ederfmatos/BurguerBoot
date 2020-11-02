@@ -7,11 +7,11 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 @Component
-public class ActionOptionFactory {
+public class ActionOptionStrategy {
 
     private final List<ActionExecutable> executables;
 
-    public ActionOptionFactory(List<ActionExecutable> executables) {
+    public ActionOptionStrategy(List<ActionExecutable> executables) {
         this.executables = executables;
     }
 

@@ -113,7 +113,7 @@
     const socket = new WebSocket("ws://localhost:9090/socket");
 
     socket.onmessage = function (event) {
-        createMessage({ myMessage: false, message: event.data });
+        createMessage({ myMessage: false, message: JSON.parse(event.data).message });
     };
 
     const $ = document.querySelector.bind(document);

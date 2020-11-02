@@ -56,12 +56,14 @@ public abstract class RequestService extends ActionService {
 
     protected abstract SelectableOption getSecondItemFinishOption();
 
+    protected abstract SelectableOption getThirdItemFinishOption();
+
     protected List<SelectableOption> getFinishOptions() {
         return Arrays.asList(
                 getFirstItemFinishOption(),
                 getSecondItemFinishOption(),
-//                new SelectableOption("2", "Fazer outro pedido", this::makeOtherRequest),
-                new SelectableOption("3", "Finalizar atendimento", this::finishAttendance)
+                getThirdItemFinishOption(),
+                new SelectableOption("4", "Finalizar atendimento", this::finishAttendance)
         );
     }
 
@@ -103,21 +105,24 @@ public abstract class RequestService extends ActionService {
         return actionOption instanceof Request;
     }
 
-    protected String makeOtherDrink(MessageRequest messageRequest, Attendance attendance, Option option) {
-        attendance
-                .setLastMessage(optionService.getFirstOption().getId())
-                .setIndexChildAction(-1);
-
-        messageRequest.setMessage("2");
-        return this.botService.getResponseFromMessage(messageRequest, attendance);
+    protected String makeOtherSnack(MessageRequest messageRequest, Attendance attendance, Option option) {
+        return makeOtherAny(messageRequest, attendance, "1");
     }
 
-    protected String makeOtherSnack(MessageRequest messageRequest, Attendance attendance, Option option) {
+    protected String makeOtherDrink(MessageRequest messageRequest, Attendance attendance, Option option) {
+        return makeOtherAny(messageRequest, attendance, "2");
+    }
+
+    protected String makeOtherPortion(MessageRequest messageRequest, Attendance attendance, Option option) {
+        return makeOtherAny(messageRequest, attendance, "3");
+    }
+
+    protected String makeOtherAny(MessageRequest messageRequest, Attendance attendance, String message) {
         attendance
                 .setLastMessage(optionService.getFirstOption().getId())
                 .setIndexChildAction(-1);
 
-        messageRequest.setMessage("1");
+        messageRequest.setMessage(message);
         return this.botService.getResponseFromMessage(messageRequest, attendance);
     }
 

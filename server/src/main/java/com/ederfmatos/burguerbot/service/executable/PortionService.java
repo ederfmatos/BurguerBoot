@@ -6,6 +6,7 @@ import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.options.ActionOption;
 import com.ederfmatos.burguerbot.model.options.Option;
 import com.ederfmatos.burguerbot.model.options.request.Drink;
+import com.ederfmatos.burguerbot.model.options.request.Portion;
 import com.ederfmatos.burguerbot.service.FinishAttendanceService;
 import com.ederfmatos.burguerbot.service.OptionService;
 import org.springframework.stereotype.Service;
@@ -14,11 +15,11 @@ import java.util.Arrays;
 import java.util.List;
 
 @Service
-public class DrinkService extends RequestService {
+public class PortionService extends RequestService {
 
     private final List<ActionExecutable> listeners;
 
-    public DrinkService(OptionService optionService, FinishAttendanceService finishAttendanceService) {
+    public PortionService(OptionService optionService, FinishAttendanceService finishAttendanceService) {
         super(optionService, finishAttendanceService);
 
         this.listeners = Arrays.asList(
@@ -35,7 +36,7 @@ public class DrinkService extends RequestService {
 
     @Override
     protected SelectableOption getFirstItemFinishOption() {
-        return new SelectableOption("1", "Pedir outra bebida", this::makeOtherDrink);
+        return new SelectableOption("1", "Pedir outra porção", this::makeOtherPortion);
     }
 
     @Override
@@ -45,7 +46,7 @@ public class DrinkService extends RequestService {
 
     @Override
     protected SelectableOption getThirdItemFinishOption() {
-        return new SelectableOption("3", "Pedir uma porção", this::makeOtherPortion);
+        return new SelectableOption("3", "Pedir uma bebida", this::makeOtherDrink);
     }
 
     @Override
@@ -57,6 +58,6 @@ public class DrinkService extends RequestService {
 
     @Override
     public boolean isInstanceOf(ActionOption actionOption) {
-        return actionOption instanceof Drink;
+        return actionOption instanceof Portion;
     }
 }

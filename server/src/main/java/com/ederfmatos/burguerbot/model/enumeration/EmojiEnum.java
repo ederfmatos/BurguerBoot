@@ -3,6 +3,7 @@ package com.ederfmatos.burguerbot.model.enumeration;
 public enum EmojiEnum {
 
     DRINK("\uD83E\uDD43"),
+    PORTION("\uD83E\uDDC6"),
     BURGER("\uD83C\uDF54"),
     WATCH("⏰"),
     ESTABLISHMENT("\uD83C\uDFEF"),

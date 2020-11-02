@@ -2,7 +2,7 @@ package com.ederfmatos.burguerbot.service;
 
 import com.ederfmatos.burguerbot.exception.BurgerBotException;
 import com.ederfmatos.burguerbot.exception.OptionNotImplementedException;
-import com.ederfmatos.burguerbot.listener.ActionOptionFactory;
+import com.ederfmatos.burguerbot.listener.ActionOptionStrategy;
 import com.ederfmatos.burguerbot.model.Attendance;
 import com.ederfmatos.burguerbot.model.MessageRequest;
 import com.ederfmatos.burguerbot.model.options.ActionOption;
@@ -17,14 +17,14 @@ public class BotService {
 
     private final OptionService optionService;
     private final AttendanceService attendanceService;
-    private final ActionOptionFactory actionOptionFactory;
+    private final ActionOptionStrategy actionOptionStrategy;
     private final List<? extends Option> options;
 
-    public BotService(OptionService optionService, AttendanceService attendanceService, ActionOptionFactory actionOptionFactory) {
+    public BotService(OptionService optionService, AttendanceService attendanceService, ActionOptionStrategy actionOptionStrategy) {
         this.optionService = optionService;
         this.attendanceService = attendanceService;
         this.options = optionService.findAll();
-        this.actionOptionFactory = actionOptionFactory;
+        this.actionOptionStrategy = actionOptionStrategy;
     }
 
     public String respondMessage(MessageRequest messageRequest) {
@@ -67,7 +67,7 @@ public class BotService {
         }
 
         if (option instanceof ActionOption) {
-            return this.actionOptionFactory.build((ActionOption) option)
+            return this.actionOptionStrategy.build((ActionOption) option)
                     .configure(this)
                     .execute(messageRequest, attendance, option);
         }
@@ -82,7 +82,7 @@ public class BotService {
 
         Option lastOption = this.optionService.findById(this.options, attendance.getLastMessage());
         if (lastOption instanceof ActionOption) {
-            return this.actionOptionFactory.build((ActionOption) lastOption)
+            return this.actionOptionStrategy.build((ActionOption) lastOption)
                     .configure(this)
                     .execute(messageRequest, attendance, lastOption);
         }

@@ -32,14 +32,18 @@ class App {
   }
 
   isBlockedMessage(message) {
-    return ![
-      'Raul Avezu',
-      'Allan Henrique',
-      'Brenda Lorençon',
-      'Daniel Donatto',
-      'Isabela',
-      'Talison',
-    ].includes(message.sender.name);
+    return (
+      ![
+        'Raul Avezu',
+        'Allan Henrique',
+        'Brenda Lorençon',
+        'Daniel Donatto',
+        'Isabela',
+        'Talison',
+        'Wellington',
+        'David Chaves',
+      ].includes(message.sender.name) || message.content.length > 100
+    );
   }
 }
 
